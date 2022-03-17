@@ -36,12 +36,43 @@ function UserPage() {
     };
   
     const handleCloseNavMenu = (pageName) => {
-      console.log('page name is:', pageName);
+      console.log('NavMenu: page name is:', pageName);
+
+      // This switch statement creates logic that will lead a user to
+      //  different pages based on which button they click on.
+      switch (pageName) {
+        case 'Home':
+          console.log('Switch home');
+          break;
+        case 'Give Away Shift':
+          console.log('Switch Give Away Shift');
+          break;
+        case 'Trade Shift':
+          console.log('Switch Trade Shift');
+          break;
+        case 'Pick Up Shift':
+          console.log('Switch Pick Up Shift');
+          break;
+        case 'Vacation Request':
+          console.log('Switch Vacation Request');
+          break;
+        case 'Call in sick':
+          console.log('Switch Call in sick');
+          break;
+        case 'About':
+          console.log('Switch About');
+          break;
+      
+        default:
+          console.log('Switch Default case');
+          break;
+      }// End Switch
+
       setAnchorElNav(null);
     };
   
     const handleCloseUserMenu = (settingName) => {
-      console.log('button name is:', settingName);
+      console.log('UserMenu: setting name is:', settingName);
       setAnchorElUser(null);
     };
 
