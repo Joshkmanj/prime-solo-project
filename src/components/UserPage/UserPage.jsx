@@ -35,17 +35,16 @@ function UserPage() {
       setAnchorElUser(event.currentTarget);
     };
   
-    const handleCloseNavMenu = () => {
+    const handleCloseNavMenu = (pageName) => {
+      console.log('page name is:', pageName);
       setAnchorElNav(null);
     };
   
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (settingName) => {
+      console.log('button name is:', settingName);
       setAnchorElUser(null);
     };
 
-
-    console.log('setAnchorUser:', anchorElUser);
-    console.log('setAnchorNav:', anchorElNav);
 
   
   return (
@@ -61,7 +60,7 @@ function UserPage() {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Profile Photo" 
-                // src="https://media-exp1.licdn.com/dms/image/C4E03AQGlycW9Vpes2w/profile-displayphoto-shrink_800_800/0/1647360104027?e=1652918400&v=beta&t=rBnpDU56XgPtE4XOBxYKGHvRK0JdU2VkudtdyU1TM98" 
+                src="https://media-exp1.licdn.com/dms/image/C4E03AQGlycW9Vpes2w/profile-displayphoto-shrink_800_800/0/1647360104027?e=1652918400&v=beta&t=rBnpDU56XgPtE4XOBxYKGHvRK0JdU2VkudtdyU1TM98" 
                 />
               </IconButton>
             </Tooltip>
@@ -82,7 +81,9 @@ function UserPage() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting}
+                onClick={()=>{handleCloseUserMenu(setting)}}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
@@ -121,8 +122,12 @@ function UserPage() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page}
+                // This adds functionality of the menu items
+                onClick={()=>{handleCloseNavMenu(page)}}>
+                  <Typography 
+                  textAlign="center"
+                  >{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -140,7 +145,7 @@ function UserPage() {
 
 
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
@@ -150,7 +155,7 @@ function UserPage() {
                 {page}
               </Button>
             ))}
-          </Box>
+          </Box> */}
           
 
 
