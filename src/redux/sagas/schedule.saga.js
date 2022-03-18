@@ -7,7 +7,7 @@ function* fetchSchedule(action){
       try {
         const schedule = yield axios.get(`/api/schedule/${action.payload}`);
         console.log('fetchSchedule: response from server (2/2):', schedule.data); // GET route test log
-        // yield put({ type: 'SET_SCHEDULE', payload: schedule.data });
+        yield put({ type: 'SET_SCHEDULE', payload: schedule.data });
 
     } catch {
         console.log('fetchSchedule: Error retrieving schedule (2/2)');

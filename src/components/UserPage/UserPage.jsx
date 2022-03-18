@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 import NavBar from '../NavBar/NavBar';
-import LogOutButton from '../LogOutButton/LogOutButton';
+// import LogOutButton from '../LogOutButton/LogOutButton';
 
 //---------List item imports
 // import * as React from 'react';
@@ -34,6 +34,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 function UserPage() {
 
   const user = useSelector((store)=> store.user)
+  const schedule = useSelector((store)=> store.schedule)
 
   const dispatch = useDispatch();
   
@@ -47,56 +48,49 @@ function UserPage() {
 const calendar = [
   {
     id: 1,
-    weekday: 'Monday',
-    secondary: '7:00am - 3:30pm',
-    date: '3/1',
+    week_day_name: 'Monday',
+    shift_time: '7:00am - 3:30pm',
+    shift_date: '3/1',
   },
   {
     id: 2,
-    weekday: 'Tuesday',
-    secondary: '7:00am - 3:30pm',
-    date: '3/2',
+    week_day_name: 'Tuesday',
+    shift_time: '7:00am - 3:30pm',
+    shift_date: '3/2',
   },
   {
     id: 3,
-    weekday: 'Wednesday',
-    secondary: 'off :)',
-    date: '3/3',
+    week_day_name: 'Wednesday',
+    shift_time: 'off :)',
+    shift_date: '3/3',
   },
   {
     id: 4,
-    weekday: 'Thursday',
-    secondary: 'off :)',
-    date: '3/4',
+    week_day_name: 'Thursday',
+    shift_time: 'off :)',
+    shift_date: '3/4',
   },
   {
     id: 5,
-    weekday: "Friday",
-    secondary: '7:00am - 3:30pm',
-    date: '3/5',
+    week_day_name: "Friday",
+    shift_time: '7:00am - 3:30pm',
+    shift_date: '3/5',
   },
   {
     id: 6,
-    weekday: 'Saturday',
-    secondary: '7:00am - 3:30pm',
-    date: '3/16',
+    week_day_name: 'Saturday',
+    shift_time: '7:00am - 3:30pm',
+    shift_date: '3/16',
   },
   {
     id: 7,
-    weekday: 'Sunday',
-    secondary: '7:00am - 3:30pm',
-    date: '12/17',
+    week_day_name: 'Sunday',
+    shift_time: '7:00am - 3:30pm',
+    shift_date: '12/17',
   },
 ];
 
-const StyledFab = styled(Fab)({
-  position: 'absolute',
-  zIndex: 1,
-  top: -30,
-  left: 0,
-  right: 0,
-  margin: '0 auto',
-});
+
 //--------- MUI List item stuff --------
 
 
@@ -116,11 +110,11 @@ const StyledFab = styled(Fab)({
           Schedule
         </Typography>
         <List sx={{ mb: 2 }}>
-          {calendar.map(({ id, weekday, secondary, date }) => (
+          {schedule.map(({ id, current_week_number, week_number, week_day_name, shift_time, shift_date }) => (
             <React.Fragment key={id}>
 
 {/*------- Here's logic that gives a subheader to list items dynamically ------*/}
-              {id === 1 && (
+              {current_week_number === week_number && week_day_name === 'Monday' && (
                 <ListSubheader sx={{ bgcolor: 'background.paper' }}>
                   Current Week
                 </ListSubheader>
@@ -133,33 +127,16 @@ const StyledFab = styled(Fab)({
 
               <ListItem button>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: '' }}>{date}</Avatar>
+                {shift_date.length < 4 ? (<Avatar sx={{ fontSize: 'medium' }}>{shift_date}</Avatar>) : (<Avatar sx={{ fontSize: 'small' }}>{shift_date}</Avatar>)}
                 </ListItemAvatar>
-                <ListItemText primary={weekday} secondary={secondary} />
+                <ListItemText primary={week_day_name} secondary={shift_time} />
               </ListItem>
             </React.Fragment>
           ))}
         </List>
       </Paper>
 
-      {/*---------- Bottom App bar ------------*/}
-      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-        <Toolbar>
-          <IconButton color="inherit" aria-label="open drawer">
-            <MenuIcon />
-          </IconButton>
-          <StyledFab color="secondary" aria-label="add">
-            <AddIcon />
-          </StyledFab>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton color="inherit">
-            <SearchIcon />
-          </IconButton>
-          <IconButton color="inherit">
-            <MoreIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+
 
 
     </React.Fragment>

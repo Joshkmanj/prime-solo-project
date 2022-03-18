@@ -14,11 +14,25 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
 
+import { styled } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Paper from '@mui/material/Paper';
+import Fab from '@mui/material/Fab';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
+import MoreIcon from '@mui/icons-material/MoreVert';
+
+
 function NavBar() {
 
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
-  const pages = ['Home', 'Give Away Shift', 'Trade Shift', 'Pick Up Shift', 'Vacation Request', 'Call in sick', 'About'];
+  const pages = ['Home', 'Drop a Shift', 'Trade Shift', 'Take a Shift', 'Vacation Request', 'Call in sick', 'About'];
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -98,6 +112,14 @@ function NavBar() {
     };// END user menu logic
     //------------------- END Menu Option logic -------------------------------------
 
+    const StyledFab = styled(Fab)({
+      position: 'absolute',
+      zIndex: 1,
+      top: -30,
+      left: 0,
+      right: 0,
+      margin: '0 auto',
+    });
 
 
   return (
@@ -228,7 +250,24 @@ function NavBar() {
 
 
 
-
+      {/*---------- Bottom App bar ------------*/}
+      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+        <Toolbar>
+          <IconButton color="inherit" aria-label="open drawer">
+            <MenuIcon />
+          </IconButton>
+          <StyledFab color="secondary" aria-label="add">
+            <AddIcon />
+          </StyledFab>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton color="inherit">
+            <SearchIcon />
+          </IconButton>
+          <IconButton color="inherit">
+            <MoreIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
     </Box>
   )
 }
