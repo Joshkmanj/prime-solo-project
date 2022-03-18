@@ -33,11 +33,13 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 
 function UserPage() {
 
+  const user = useSelector((store)=> store.user)
 
   const dispatch = useDispatch();
   
   useEffect(()=>{
-    dispatch({type:'FETCH_SCHEDULE'})
+    console.log('In useEffect');
+    dispatch({type:'FETCH_SCHEDULE', payload: user.id})
   },[])
 
 
