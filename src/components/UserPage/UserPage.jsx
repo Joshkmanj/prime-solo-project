@@ -1,4 +1,8 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+
 import NavBar from '../NavBar/NavBar';
 import LogOutButton from '../LogOutButton/LogOutButton';
 
@@ -28,10 +32,17 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 
 
 function UserPage() {
+
+
+  const dispatch = useDispatch();
   
-  
+  useEffect(()=>{
+    dispatch({type:'FETCH_SCHEDULE'})
+  },[])
+
+
 //--------- MUI List item stuff --------
-const messages = [
+const calendar = [
   {
     id: 1,
     weekday: 'Monday',
@@ -84,9 +95,9 @@ const StyledFab = styled(Fab)({
   right: 0,
   margin: '0 auto',
 });
-
-
 //--------- MUI List item stuff --------
+
+
 
 
   
@@ -103,7 +114,7 @@ const StyledFab = styled(Fab)({
           Schedule
         </Typography>
         <List sx={{ mb: 2 }}>
-          {messages.map(({ id, weekday, secondary, date }) => (
+          {calendar.map(({ id, weekday, secondary, date }) => (
             <React.Fragment key={id}>
 
 {/*------- Here's logic that gives a subheader to list items dynamically ------*/}
@@ -119,10 +130,8 @@ const StyledFab = styled(Fab)({
               )} */}
 
               <ListItem button>
-                <ListItemAvatar 
-                // sx={{ bgcolor: pink[500] }}
-                >
-                  <Avatar>{date}</Avatar>
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: '' }}>{date}</Avatar>
                 </ListItemAvatar>
                 <ListItemText primary={weekday} secondary={secondary} />
               </ListItem>
