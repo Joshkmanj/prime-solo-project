@@ -7,14 +7,26 @@ router.get('/:id', (req, res) => {
   // This collects the user's ID from the GET request params
   let userId= req.params.id 
   // Line up the query text to be sent off
+  // const queryText = `SELECT 
+  // "id",
+  // "shift_time",
+  // to_char("date", 'FMMM/FMDD') AS "shift_date",
+  // to_char("date", 'FMDay') AS "week_day_name",
+  // to_char("date", 'IW') AS "week_number",
+  // to_char(current_timestamp, 'IW') AS "current_week_number"
+  // FROM "schedule"
+  // WHERE "staff_id" = $1
+  // ORDER BY to_char("date", 'YY/MM/DD');`;
+
+  // This is an experimental query
   const queryText = `SELECT 
   "id",
   "shift_time",
   to_char("date", 'FMMM/FMDD') AS "shift_date",
-  to_char("date", 'Day') AS "week_day_name",
+  to_char("date", 'FMDay') AS "week_day_name",
   to_char("date", 'IW') AS "week_number",
   to_char(current_timestamp, 'IW') AS "current_week_number"
-  FROM "calendar"
+  FROM "schedule"
   WHERE "staff_id" = $1
   ORDER BY to_char("date", 'YY/MM/DD');`;
 

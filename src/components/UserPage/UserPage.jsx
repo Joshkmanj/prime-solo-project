@@ -35,6 +35,7 @@ function UserPage() {
 
   const user = useSelector((store)=> store.user)
   const schedule = useSelector((store)=> store.schedule)
+  
 
   const dispatch = useDispatch();
   
@@ -92,10 +93,18 @@ const calendar = [
 
 
 //--------- MUI List item stuff --------
+/*
+let today = new Date();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+let yyyy = today.getFullYear();
 
+today = mm + '/' + dd + '/' + yyyy;
+// document.write(today);
+*/
 
-
-
+// let todaysDate = (today);
+// console.log('current day is:', todaysDate);
   
   return (
 
@@ -114,7 +123,7 @@ const calendar = [
             <React.Fragment key={id}>
 
 {/*------- Here's logic that gives a subheader to list items dynamically ------*/}
-              {current_week_number === week_number && week_day_name === 'Monday' && (
+              { week_day_name === 'Monday' && (
                 <ListSubheader sx={{ bgcolor: 'background.paper' }}>
                   Current Week
                 </ListSubheader>

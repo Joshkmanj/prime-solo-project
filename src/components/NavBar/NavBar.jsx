@@ -27,9 +27,13 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 
+import { useHistory } from 'react-router-dom';
+
+
 
 function NavBar() {
 
+  const history = useHistory()
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const pages = ['Home', 'Drop a Shift', 'Trade Shift', 'Take a Shift', 'Vacation Request', 'Call in sick', 'About'];
@@ -58,23 +62,32 @@ function NavBar() {
         case 'Home':
           console.log('Switch: routing to -> home View');
           break;
-        case 'Give Away Shift':
+        case 'Drop a Shift':
           console.log('Switch: routing to -> Give Away Shift View');
+          // dispatch({type: SET_MODIFIER, payload:'Shift Giveaway'})
+          history.push('/modify-shift/drop/-1')
           break;
         case 'Trade Shift':
           console.log('Switch: routing to -> Trade Shift View');
+          // dispatch({type: SET_MODIFIER, payload:'Shift Trade'})
+          history.push('/modify-shift/trade/-1')
           break;
-        case 'Pick Up Shift':
+        case 'Take a Shift':
           console.log('Switch: routing to -> Pick Up Shift View');
+          // dispatch({type: SET_MODIFIER, payload:'Shift Pick-up'})
+          history.push('/modify-shift/pick-up/-1')
           break;
         case 'Vacation Request':
           console.log('Switch: routing to -> Vacation Request View');
+          // dispatch({type: SET_MODIFIER, payload:'Vacation Request'})
+          history.push('/modify-shift/vaycay/-1')
           break;
         case 'Call in sick':
           console.log('Switch: routing to -> Call in sick View');
           break;
         case 'About':
           console.log('Switch: routing to -> About View');
+          history.push('/about')
           break;
       
         default:
