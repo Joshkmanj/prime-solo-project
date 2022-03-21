@@ -35,13 +35,11 @@ function UserPage() {
 
   const user = useSelector((store)=> store.user)
   const schedule = useSelector((store)=> store.schedule)
-  
-
   const dispatch = useDispatch();
   
   useEffect(()=>{
     console.log('In useEffect');
-    dispatch({type:'FETCH_SCHEDULE', payload: user.id})
+    dispatch({type:'FETCH_SHIFTS', payload: user.id})
   },[])
 
 

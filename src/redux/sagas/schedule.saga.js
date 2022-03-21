@@ -2,7 +2,7 @@ import axios from "axios";
 import { put, takeLatest } from 'redux-saga/effects';
 
 
-function* fetchSchedule(action){
+function* fetchShifts(action){
       console.log(`fetchSchedule: getting user ${action.payload} schedule from database (1/2)`); // GET route test log
       try {
         const schedule = yield axios.get(`/api/schedule/${action.payload}`);
@@ -17,6 +17,6 @@ function* fetchSchedule(action){
 
 function* scheduleSaga(){
   // This function will route these specific actions to the corresponding functions above
-  yield takeLatest('FETCH_SCHEDULE', fetchSchedule) 
+  yield takeLatest('FETCH_SHIFTS', fetchShifts) 
 }
 export default scheduleSaga;

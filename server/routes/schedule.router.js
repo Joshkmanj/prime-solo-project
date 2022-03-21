@@ -22,6 +22,7 @@ router.get('/:id', (req, res) => {
   const queryText = `SELECT 
   "id",
   "shift_time",
+  "date" AS "full_date",
   to_char("date", 'FMMM/FMDD') AS "shift_date",
   to_char("date", 'FMDay') AS "week_day_name",
   to_char("date", 'IW') AS "week_number",
