@@ -8,7 +8,7 @@ const userStrategy = require('../strategies/user.strategy');
 
 const router = express.Router();
 
-// Handles Ajax request for user information if user is authenticated
+// Handles Axios request for user information if user is authenticated
 router.get('/', rejectUnauthenticated, (req, res) => { 
   // This function runs the function "rejectUnauthenticated", which will tell the authentication status of 
   // the user. If the user is rejected, then it stops here. If the user is accepted, then it continues on 
@@ -33,7 +33,7 @@ router.post('/register', (req, res, next) => {
     .catch((err) => {
       console.log('User registration failed: ', err);
       res.sendStatus(500);
-    });15
+    });
 });
 
 // Handles login form authenticate/login POST
