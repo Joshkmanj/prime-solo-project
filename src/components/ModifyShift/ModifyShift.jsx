@@ -178,6 +178,11 @@ function ModifyShift() {
             <h1>Mod:{modifier}, shiftId:{shiftId}</h1>
             {(modifier==='vaycay') &&
                 <VaycayModifier schedule={schedule}/>}
+            {(modifier==='trade') &&
+            
+            }
+            
+            
         </>
     )
 }
