@@ -6,10 +6,11 @@ router.get('/calendar', (req,res) => {
   let queryText = ''
 })
 
+// Gets a user's scheduled shifts based off their ID.
 router.get('/user/:id', (req, res) => {
   // This collects the user's ID from the GET request params
   let userId= req.params.id 
-  
+
   // Line up the query text to be sent off
   const queryText = `SELECT 
   "id",
@@ -34,9 +35,7 @@ router.get('/user/:id', (req, res) => {
   })
 });
 
-/**
- * POST route template
- */
+// Shift trade logic. Some updating can be done after initial demonstration.
 router.post('/trade', async(req, res) => {
   // POST route code here
   const myId = req.body.myId; // id of the person accepting the trade
@@ -46,6 +45,7 @@ router.post('/trade', async(req, res) => {
 
   // WE NEED TO USE THE SAME CONNECTION FOR ALL QUERIES!!!!
   const connection = await pool.connect(); // THIS ISN'T JUST AN INSTANCE, YOU'RE MAKING A CONNECTION THAT HAS TO BE RELEASED EVENTUALLY!!
+  console.log('connection initiated (1/2)');
 
   // This is going to be basic javascript "try"/"catch"
   try{
@@ -53,6 +53,11 @@ router.post('/trade', async(req, res) => {
     await connection.query('BEGIN'); 
 
     // Here's the SQL text that'll be used for both transactions.
+    // The one problem with this that I'd like to come back and fix after my demo is
+    //  that a malicious user could alter the req.body and update shifts of other users.
+    //  All I would need to fix this is to just have server sided logic check the database
+    //  to ensure the user ID's match the shift ID's and allow only users who are verified
+    //  to be able to alter shifts that they are tied to.
     const sqlText = `UPDATE "schedule"
     SET "staff_id" = $1
     WHERE "id" = $2;`;
@@ -81,6 +86,7 @@ router.post('/trade', async(req, res) => {
     // This will put the client connection back in the pool.
     // THIS IS VERY IMPORTANT, OTHERWISE YOU WON'T BE ABLE TO MAKE ANY MORE QUERIES!!
     connection.release(); /// YOU HAVE TO RELEASE AFTER YOU'VE CONNECTED
+    console.log('connection released (2/2)');
   }
 });
 

@@ -167,7 +167,8 @@ function VaycayModifier({schedule}) {
     return (
         <>
                 <CustomMultiSelect 
-                onChange={(event)=>{selector(event)}}
+                onChange={(event)=>{selector(event)}
+              }
                 >
                   {schedule.map(day =>(
                     <StyledOption 
