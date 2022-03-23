@@ -8,6 +8,7 @@ import NavBar from '../NavBar/NavBar';
 
 //---------List item imports
 // import * as React from 'react';
+
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -44,8 +45,10 @@ function UserPage() {
   }, [])
 
 
+  ///----------------- avatar menu
+  
+  ///----------------- avatar menu
 
-  console.log('calendar is:', calendar);
 
   return (
 
@@ -95,7 +98,8 @@ function UserPage() {
                 {/*------- Here's logic that gives a subheader to list items dynamically ------*/}
                 {cDate.week_day_name === 'Monday' && (
                   <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                    Current Week
+                    Week  
+                    {/* {cDate.week_number} */}
                   </ListSubheader>
                 )}
                 {/* {id === 3 && (
