@@ -35,74 +35,17 @@ function UserPage() {
 
   const user = useSelector((store) => store.user)
   const schedule = useSelector((store) => store.schedule)
+  const calendar = useSelector((store) => store.calendar)
   const dispatch = useDispatch();
 
   useEffect(() => {
     console.log('In useEffect');
-    dispatch({ type: 'FETCH_SHIFTS', payload: user.id })
+    dispatch({ type: 'FETCH_CALENDAR', payload: user.id })
   }, [])
 
 
-  //--------- MUI List item stuff --------
-  const calendar = [
-    {
-      id: 1,
-      week_day_name: 'Monday',
-      shift_time: '7:00am - 3:30pm',
-      shift_date: '3/1',
-    },
-    {
-      id: 2,
-      week_day_name: 'Tuesday',
-      shift_time: '7:00am - 3:30pm',
-      shift_date: '3/2',
-    },
-    {
-      id: 3,
-      week_day_name: 'Wednesday',
-      shift_time: 'off :)',
-      shift_date: '3/3',
-    },
-    {
-      id: 4,
-      week_day_name: 'Thursday',
-      shift_time: 'off :)',
-      shift_date: '3/4',
-    },
-    {
-      id: 5,
-      week_day_name: "Friday",
-      shift_time: '7:00am - 3:30pm',
-      shift_date: '3/5',
-    },
-    {
-      id: 6,
-      week_day_name: 'Saturday',
-      shift_time: '7:00am - 3:30pm',
-      shift_date: '3/16',
-    },
-    {
-      id: 7,
-      week_day_name: 'Sunday',
-      shift_time: '7:00am - 3:30pm',
-      shift_date: '12/17',
-    },
-  ];
 
-
-  //--------- MUI List item stuff --------
-  /*
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, '0');
-  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  let yyyy = today.getFullYear();
-  
-  today = mm + '/' + dd + '/' + yyyy;
-  // document.write(today);
-  */
-
-  // let todaysDate = (today);
-  // console.log('current day is:', todaysDate);
+  console.log('calendar is:', calendar);
 
   return (
 
@@ -125,7 +68,7 @@ function UserPage() {
           <li key={`section-${sectionId}`}>
             <ul>
               <ListSubheader>{`I'm sticky ${sectionId}`}</ListSubheader>
-              {schedule.map(({ id, current_week_number, week_number, week_day_name, shift_time, shift_date }) => (
+              {calendar.map(({ id, calendar_date, week_number, week_day_name, staff_id, shift_time }) => (
                 <ListItem button>
                   <ListItemAvatar>
                     {shift_date.length < 4 ? (<Avatar sx={{ fontSize: 'medium' }}>{shift_date}</Avatar>) : (<Avatar sx={{ fontSize: 'small' }}>{shift_date}</Avatar>)}
@@ -146,11 +89,11 @@ function UserPage() {
             Schedule
           </Typography>
           <List sx={{ mb: 2 }}>
-            {schedule.map(({ id, current_week_number, week_number, week_day_name, shift_time, shift_date }) => (
-              <React.Fragment key={id}>
+            {calendar.map(cDate => (
+              <React.Fragment key={cDate.id}>
 
                 {/*------- Here's logic that gives a subheader to list items dynamically ------*/}
-                {week_day_name === 'Monday' && (
+                {cDate.week_day_name === 'Monday' && (
                   <ListSubheader sx={{ bgcolor: 'background.paper' }}>
                     Current Week
                   </ListSubheader>
@@ -161,11 +104,11 @@ function UserPage() {
                 </ListSubheader>
               )} */}
 
-                <ListItem button>
+                <ListItem button onClick={()=>{console.log('You clicked this:', cDate.abrv_date);}}>
                   <ListItemAvatar>
-                    {shift_date.length < 4 ? (<Avatar sx={{ fontSize: 'medium' }}>{shift_date}</Avatar>) : (<Avatar sx={{ fontSize: 'small' }}>{shift_date}</Avatar>)}
+                    {cDate.abrv_date.length < 5 ? (<Avatar sx={{ fontSize: 'medium' }}>{cDate.abrv_date}</Avatar>) : (<Avatar sx={{ fontSize: 'small' }}>{cDate.abrv_date}</Avatar>)}
                   </ListItemAvatar>
-                  <ListItemText primary={week_day_name} secondary={shift_time} />
+                  {(cDate.shift_time) ? <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ bgcolor: '#9aca38' }}/> : <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} />}
                 </ListItem>
               </React.Fragment>
             ))}
