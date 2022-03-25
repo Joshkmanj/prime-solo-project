@@ -21,7 +21,7 @@ const style = {
   pb: 3,
 };
 
-function ChildModal() {
+function SickModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -40,13 +40,49 @@ function ChildModal() {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...style, width: 250 }}>
-          <h2 id="child-modal-title">I would recommend that you don't do that</h2>
+        <Box sx={{ ...style, width: 300 }}>
+          <h2 id="child-modal-title">I would recommend that you don't</h2>
           <p id="child-modal-description">
             
           </p>
-          <Button variant="outlined" color="warning" onClick={handleClose}>I'll take a Tylenol</Button>
-          <Button variant="outlined" color="error" onClick={handleClose}>I Insist</Button>
+          <Stack direction="row" spacing={2}>
+          <Button variant="outlined" color="warning" onClick={handleClose}>I'll take Tylenol</Button>
+          <Button variant="outlined" color="error" onClick={handleClose}>No, I Insist</Button>
+          </Stack>
+        </Box>
+      </Modal>
+    </React.Fragment>
+  );
+}
+
+function TradeModal() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <React.Fragment>
+<Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button>
+      <Modal
+        hideBackdrop
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description"
+      >
+        <Box sx={{ ...style, width: 300 }}>
+          <h2 id="child-modal-title">Select an option</h2>
+          <p id="child-modal-description">
+            
+          </p>
+          <Stack direction="row" spacing={2}>
+          <Button variant="outlined" color="warning" onClick={handleClose}>I'll take Tylenol</Button>
+          <Button variant="outlined" color="error" onClick={handleClose}>No, I Insist</Button>
+          </Stack>
         </Box>
       </Modal>
     </React.Fragment>
@@ -77,10 +113,10 @@ function NestedModal({ cDate }) {
         >
           <h2 id="parent-modal-title">Options for {cDate.week_day_name} - {cDate.abrv_date}</h2>
           <Stack direction="column" spacing={2}>
-            <Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button>
+            {/* <Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button> */}
+          <TradeModal />
             <Button variant="contained" onClick={()=>{history.push(`/modify-shift/drop/${cDate.shift_id}`)}}>Give Away</Button>
-            {/* <Button variant="contained" onClick={()=>{}}color="error">Call In Sick</Button> */}
-          <ChildModal />
+          <SickModal />
           </Stack>
 
           {/* <p id="parent-modal-description">
