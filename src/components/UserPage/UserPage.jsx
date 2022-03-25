@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import NestedModal from '../ModModal/ModModal.jsx'
 
 
 import NavBar from '../NavBar/NavBar';
@@ -46,44 +47,15 @@ function UserPage() {
 
 
   ///----------------- avatar menu
-  
+
   ///----------------- avatar menu
 
 
   return (
 
     <>
-      {/* Top app bar */}
       <NavBar />
-      {/* <List
-        sx={{
-          width: '100%',
-          maxWidth: 360,
-          bgcolor: 'background.paper',
-          position: 'relative',
-          overflow: 'auto',
-          maxHeight: 300,
-          '& ul': { padding: 0 },
-        }}
-        subheader={<li />}
-      >
-        {[0, 1, 2, 3, 4].map((sectionId) => (
-          <li key={`section-${sectionId}`}>
-            <ul>
-              <ListSubheader>{`I'm sticky ${sectionId}`}</ListSubheader>
-              {calendar.map(({ id, calendar_date, week_number, week_day_name, staff_id, shift_time }) => (
-                <ListItem button>
-                  <ListItemAvatar>
-                    {shift_date.length < 4 ? (<Avatar sx={{ fontSize: 'medium' }}>{shift_date}</Avatar>) : (<Avatar sx={{ fontSize: 'small' }}>{shift_date}</Avatar>)}
-                  </ListItemAvatar>
-                  <ListItemText primary={week_day_name} secondary={shift_time} />
-                </ListItem>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </List> */}
-
+      
 
       <React.Fragment>
         <CssBaseline />
@@ -91,32 +63,25 @@ function UserPage() {
           <Typography variant="h5" gutterBottom component="div" sx={{ p: 2, pb: 0 }}>
             Schedule
           </Typography>
+
           <List sx={{ mb: 2 }}>
             {calendar.map(cDate => (
               <React.Fragment key={cDate.id}>
 
-                {/*------- Here's logic that gives a subheader to list items dynamically ------*/}
-                {cDate.week_day_name === 'Monday' && (
-                  <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                    Week  
-                    {/* {cDate.week_number} */}
-                  </ListSubheader>
-                )}
-                {/* {id === 3 && (
-                <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                  Next Week
-                </ListSubheader>
-              )} */}
 
-                <ListItem button onClick={()=>{console.log('You clicked this:', cDate.abrv_date);}}>
+                <ListItem button onClick={()=>{console.log('You clicked this:', cDate.abrv_date)}}>
                   <ListItemAvatar>
-                    {cDate.abrv_date.length < 5 ? (<Avatar sx={{ fontSize: 'medium' }}>{cDate.abrv_date}</Avatar>) : (<Avatar sx={{ fontSize: 'small' }}>{cDate.abrv_date}</Avatar>)}
+                 <Avatar sx={{ fontSize: 'medium' }}>{cDate.abrv_date}</Avatar>
                   </ListItemAvatar>
-                  {(cDate.shift_time) ? <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ bgcolor: '#9aca38' }}/> : <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} />}
+                <NestedModal cDate={cDate}/>
                 </ListItem>
+
+
               </React.Fragment>
             ))}
           </List>
+
+
         </Paper>
 
 
