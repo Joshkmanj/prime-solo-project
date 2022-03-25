@@ -37,7 +37,7 @@ function NavBar() {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const pages = ['Home', 'Drop a Shift', 'Trade Shift', 'Take a Shift', 'Vacation Request', 'Call in sick', 'About'];
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const settings = ['Profile', 'Account', 'Random Kanye West Quote', 'Dashboard', 'Logout'];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -230,7 +230,7 @@ function NavBar() {
               component="div"
               sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
             >
-              ShiftAce
+              Shifty Business
             </Typography>
 
 

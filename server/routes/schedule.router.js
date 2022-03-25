@@ -2,14 +2,32 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
-router.get('/calendar', (req,res) => {
-  let queryText = ''
-})
+router.get('/calendar/:id', (req, res) => {
+  let personId = req.params.id
+
+  const sqlQueryText = `SELECT "cs"."day_number" AS "id", "cs"."calendar_date", to_char("cs"."calendar_date", 'FMMM/FMDD') AS "abrv_date","cs"."week_number", "cs"."week_day_name",
+  "sc"."staff_id", "sc"."shift_time", "sc"."id" AS "shift_id"
+  FROM "calendar_structure" AS "cs"
+  LEFT JOIN (SELECT * FROM "schedule" WHERE "staff_id" = $1) AS "sc"
+  ON "cs"."calendar_date" = "sc"."date"
+  WHERE "week_number" > 8 AND "week_number" < 20
+  ORDER BY "cs"."calendar_date";`
+
+  // The query text is sent to the database with a sanitized input
+  pool.query(sqlQueryText, [personId])
+    .then((response) => {
+      // console.log('response:',response.rows); // test log for when new queries are being tested.
+      res.send(response.rows)
+    }).catch((error) => {
+      console.log('Database error:', error);
+      res.sendStatus(500)
+    })
+});
 
 // Gets a user's scheduled shifts based off their ID.
 router.get('/user/:id', (req, res) => {
   // This collects the user's ID from the GET request params
-  let userId= req.params.id 
+  let userId = req.params.id
 
   // Line up the query text to be sent off
   const queryText = `SELECT 
@@ -26,17 +44,17 @@ router.get('/user/:id', (req, res) => {
 
   // The query text is sent to the database with a sanitized input
   pool.query(queryText, [userId])
-  .then((response)=>{
-    // console.log('response:',response.rows); // test log for when new queries are being tested.
-    res.send(response.rows)
-  }).catch((error)=>{
-    console.log('Database error:', error);
-    res.sendStatus(500)
-  })
+    .then((response) => {
+      // console.log('response:',response.rows); // test log for when new queries are being tested.
+      res.send(response.rows)
+    }).catch((error) => {
+      console.log('Database error:', error);
+      res.sendStatus(500)
+    })
 });
 
 // Shift trade logic. Some updating can be done after initial demonstration.
-router.post('/trade', async(req, res) => {
+router.post('/trade', async (req, res) => {
   // POST route code here
   const myId = req.body.myId; // id of the person accepting the trade
   const partnerId = req.body.partnerId;  // id of who the employee is trading with
@@ -48,9 +66,9 @@ router.post('/trade', async(req, res) => {
   console.log('connection initiated (1/2)');
 
   // This is going to be basic javascript "try"/"catch"
-  try{
+  try {
     // Here we start the transaction with a "BEGIN"
-    await connection.query('BEGIN'); 
+    await connection.query('BEGIN');
 
     // Here's the SQL text that'll be used for both transactions.
     // The one problem with this that I'd like to come back and fix after my demo is
@@ -61,10 +79,10 @@ router.post('/trade', async(req, res) => {
     const sqlText = `UPDATE "schedule"
     SET "staff_id" = $1
     WHERE "id" = $2;`;
-  
+
     // This assigns the user's ID to the other person's shift
     await connection.query(sqlText, [myId, theirShiftId]);
-    
+
     // this assigns the coworker's Id to the user's shift
     await connection.query(sqlText, [partnerId, myShiftId]);
 
@@ -73,7 +91,7 @@ router.post('/trade', async(req, res) => {
 
     // Returning success code to the client
     res.sendStatus(200)
-  } catch(error) {
+  } catch (error) {
     // In case of transaction failure, the changes are rolled back
     await connection.query('ROLLBACK');
 

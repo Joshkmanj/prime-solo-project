@@ -11,19 +11,20 @@ import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../NavBar/NavBar'
-import VaycayModifier from './VaycayModifier';
+import VaycayModifier from './VaycayModifier.jsx';
+import TradeModifier from './TradeModifier.jsx';
 
 function ModifyShift() {
 
     const dispatch = useDispatch();
     let { modifier, shiftId } = useParams()
-    const user = useSelector((store)=> store.user)
-    const schedule = useSelector((store)=> store.schedule)
-    
-    useEffect(()=>{
-      console.log('In useEffect');
-      dispatch({type:'FETCH_SHIFTS', payload: user.id})
-    },[])
+    const user = useSelector((store) => store.user)
+    const schedule = useSelector((store) => store.schedule)
+
+    useEffect(() => {
+        console.log('In useEffect');
+        dispatch({ type: 'FETCH_SHIFTS', payload: user.id })
+    }, [])
 
 
 
@@ -37,7 +38,7 @@ function ModifyShift() {
     //     600: '#0072E5',
     //     900: '#003A75',
     //   };
-      
+
     //   const grey = {
     //     100: '#E7EBF0',
     //     200: '#E0E3E7',
@@ -49,7 +50,7 @@ function ModifyShift() {
     //     800: '#2D3843',
     //     900: '#1A2027',
     //   };
-      
+
     //   const StyledButton = styled('button')(
     //     ({ theme }) => `
     //     font-family: IBM Plex Sans, sans-serif;
@@ -65,29 +66,29 @@ function ModifyShift() {
     //     text-align: left;
     //     line-height: 1.5;
     //     color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-      
+
     //     &:hover {
     //       background: ${theme.palette.mode === 'dark' ? '' : grey[100]};
     //       border-color: ${theme.palette.mode === 'dark' ? grey[700] : grey[400]};
     //     }
-      
+
     //     &.${selectUnstyledClasses.focusVisible} {
     //       outline: 3px solid ${theme.palette.mode === 'dark' ? blue[600] : blue[100]};
     //     }
-      
+
     //     &.${selectUnstyledClasses.expanded} {
     //       &::after {
     //         content: '▴';
     //       }
     //     }
-      
+
     //     &::after {
     //       content: '▾';
     //       float: right;
     //     }
     //     `,
     //   );
-      
+
     //   const StyledListbox = styled('ul')(
     //     ({ theme }) => `
     //     font-family: IBM Plex Sans, sans-serif;
@@ -104,48 +105,48 @@ function ModifyShift() {
     //     outline: 0px;
     //     `,
     //   );
-      
+
     //   const StyledOption = styled(OptionUnstyled)(
     //     ({ theme }) => `
     //     list-style: none;
     //     padding: 8px;
     //     border-radius: 0.45em;
     //     cursor: default;
-      
+
     //     &:last-of-type {
     //       border-bottom: none;
     //     }
-      
+
     //     &.${optionUnstyledClasses.selected} {
     //       background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
     //       color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
     //     }
-      
+
     //     &.${optionUnstyledClasses.highlighted} {
     //       background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
     //       color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
     //     }
-      
+
     //     &.${optionUnstyledClasses.highlighted}.${optionUnstyledClasses.selected} {
     //       background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
     //       color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
     //     }
-      
+
     //     &.${optionUnstyledClasses.disabled} {
     //       color: ${theme.palette.mode === 'dark' ? grey[700] : grey[400]};
     //     }
-      
+
     //     &:hover:not(.${optionUnstyledClasses.disabled}) {
     //       background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
     //       color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
     //     }
     //     `,
     //   );
-      
+
     //   const StyledPopper = styled(PopperUnstyled)`
     //     z-index: 1;
     //   `;
-      
+
     //   const CustomMultiSelect = React.forwardRef(function CustomMultiSelect(props, ref) {
     //     const components = {
     //       Root: StyledButton,
@@ -153,10 +154,10 @@ function ModifyShift() {
     //       Popper: StyledPopper,
     //       ...props.components,
     //     };
-      
+
     //     return <MultiSelectUnstyled {...props} ref={ref} components={components} />;
     //   });
-      
+
     //   CustomMultiSelect.propTypes = {
     //     /**
     //      * The components used for each slot inside the Select.
@@ -176,13 +177,10 @@ function ModifyShift() {
         <>
             <NavBar />
             <h1>Mod:{modifier}, shiftId:{shiftId}</h1>
-            {(modifier==='vaycay') &&
-                <VaycayModifier schedule={schedule}/>}
-            {/* {(modifier==='trade') &&
-            
-            } */}
-            
-            
+            {(modifier === 'vaycay') && <VaycayModifier schedule={schedule} />}
+
+
+
         </>
     )
 }
