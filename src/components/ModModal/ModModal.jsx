@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import ListItemText from '@mui/material/ListItemText';
+import Stack from '@mui/material/Stack';
+import { useHistory } from 'react-router-dom';
 
 
 const style = {
@@ -30,7 +32,7 @@ function ChildModal() {
 
   return (
     <React.Fragment>
-      <Button onClick={handleOpen}>Open Child Modal</Button>
+      <Button onClick={handleOpen} variant="contained" color="error">Call In Sick</Button>
       <Modal
         hideBackdrop
         open={open}
@@ -38,19 +40,20 @@ function ChildModal() {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...style, width: 200 }}>
-          <h2 id="child-modal-title">Hells ya</h2>
+        <Box sx={{ ...style, width: 250 }}>
+          <h2 id="child-modal-title">I would recommend that you don't do that</h2>
           <p id="child-modal-description">
-            It worrrrkss
+            
           </p>
-          <Button onClick={handleClose}>Close Child Modal</Button>
+          <Button variant="outlined" color="warning" onClick={handleClose}>I'll take a Tylenol</Button>
+          <Button variant="outlined" color="error" onClick={handleClose}>I Insist</Button>
         </Box>
       </Modal>
     </React.Fragment>
   );
 }
 
-function NestedModal({cDate}) {
+function NestedModal({ cDate }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -61,23 +64,28 @@ function NestedModal({cDate}) {
 
   return (
     <div>
-      <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }}/>
-
+      {/* <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }}/> */}
+      {(cDate.shift_time) ? <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }} /> : <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ width: 270, borderRadius: '5px', p: 1 }} />}
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box 
-        sx={{ ...style, width: 400 }}
+        <Box
+          sx={{ ...style, width: 400 }}
         >
-          <h2 id="parent-modal-title">Trade shift</h2>
-          
-          <p id="parent-modal-description">
-            Ahaaa bitchhh
-          </p>
+          <h2 id="parent-modal-title">Options for {cDate.week_day_name} - {cDate.abrv_date}</h2>
+          <Stack direction="column" spacing={2}>
+            <Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button>
+            <Button variant="contained" onClick={()=>{history.push(`/modify-shift/drop/${cDate.shift_id}`)}}>Give Away</Button>
+            {/* <Button variant="contained" onClick={()=>{}}color="error">Call In Sick</Button> */}
           <ChildModal />
+          </Stack>
+
+          {/* <p id="parent-modal-description">
+            example text
+          </p> */}
         </Box>
       </Modal>
     </div>
