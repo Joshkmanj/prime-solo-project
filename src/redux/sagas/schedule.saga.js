@@ -13,11 +13,12 @@ function* fetchShifts(action){
         console.log('fetchSchedule: Error retrieving schedule');
     }
 }
+
 function* fetchCalendar(action){
-      console.log(`fetchCalendar: Getting calendar and shifts from database (1/2)`); // GET route test log
+      // console.log(`fetchCalendar: Getting calendar and shifts from database (1/2)`); // GET route test log
       try {
         const calendar = yield axios.get(`/api/schedule/calendar/${action.payload}`);
-        console.log('fetchCalendar: response from server (2/2):', calendar.data); // GET route test log
+        // console.log('fetchCalendar: response from server (2/2):', calendar.data); // GET route test log
         yield put({ type: 'SET_CALENDAR', payload: calendar.data });
 
     } catch {
