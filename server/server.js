@@ -21,10 +21,12 @@ app.use(passport.session());
 // Route includes
 const userRouter = require('./routes/user.router');
 const scheduleRouter = require('./routes/schedule.router');
+const shiftRouter = require('./routes/shift.router');
 
 /* Routes */
 app.use('/api/user', userRouter); // This route handles user authentication related things.
 app.use('/api/schedule', scheduleRouter); // This route handles schedule related things.
+app.use('/api/shift', shiftRouter); // This route handles shift related things.
 
 // Serve static files
 app.use(express.static('build'));

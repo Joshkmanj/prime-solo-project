@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import { useHistory } from 'react-router-dom';
+import SendIcon from '@mui/icons-material/Send';
+import { useDispatch } from 'react-redux';
 
 
 const style = {
@@ -21,22 +23,30 @@ const style = {
   pb: 3,
 };
 
-function SickModal() {
+function SickModal({ cDate, handleClose }) {
+  const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
+  const handleSickOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => {
+  const handleSickClose = () => {
     setOpen(false);
   };
 
+  const callInSick = ()=>{
+    console.log('calling in sick, shift_id:', cDate.shift_id);
+    dispatch({type:'CALL_IN_SICK', payload: cDate.shift_id})
+    handleSickClose();
+    handleClose();
+  }
+
   return (
     <React.Fragment>
-      <Button onClick={handleOpen} variant="contained" color="error">Call In Sick</Button>
+      <Button onClick={handleSickOpen} variant="contained" color="error">Call In Sick</Button>
       <Modal
         hideBackdrop
         open={open}
-        onClose={handleClose}
+        onClose={handleSickClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
@@ -46,31 +56,32 @@ function SickModal() {
             
           </p>
           <Stack direction="row" spacing={2}>
-          <Button variant="outlined" color="warning" onClick={handleClose}>I'll take Tylenol</Button>
-          <Button variant="outlined" color="error" onClick={handleClose}>No, I Insist</Button>
+          <Button variant="outlined" color="warning" onClick={handleSickClose}>I'll take Tylenol</Button>
+          <Button variant="outlined" color="error" onClick={callInSick}>No, I Insist</Button>
           </Stack>
         </Box>
       </Modal>
     </React.Fragment>
   );
-}
+} //-------------- END SICK MODAL ------------
 
-function TradeModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
+function TradeModal({ cDate }) {
+  const [tradeOpen, setTradeOpen] = React.useState(false);
+  const handleTradeOpen = () => {
+    setTradeOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleTradeClose = () => {
+    setTradeOpen(false);
   };
+
 
   return (
     <React.Fragment>
-<Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button>
+<Button variant="contained" onClick={handleTradeOpen}>Trade Shift</Button>
       <Modal
         hideBackdrop
-        open={open}
-        onClose={handleClose}
+        open={tradeOpen}
+        onClose={handleTradeClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
@@ -80,14 +91,48 @@ function TradeModal() {
             
           </p>
           <Stack direction="row" spacing={2}>
-          <Button variant="outlined" color="warning" onClick={handleClose}>I'll take Tylenol</Button>
-          <Button variant="outlined" color="error" onClick={handleClose}>No, I Insist</Button>
+          <Button variant="outlined" color="warning" onClick={handleTradeClose}>I'll take Tylenol</Button>
+          <Button variant="outlined" color="error" onClick={handleTradeClose}>No, I Insist</Button>
           </Stack>
         </Box>
       </Modal>
     </React.Fragment>
   );
-}
+} //-------------- END TRADE SHIFT MODAL ------------
+
+function GiveAwayModal({ cDate }) {
+  const [giveawayOpen, setGiveawayOpen] = React.useState(false);
+  const handleGiveawayOpen = () => {
+    setGiveawayOpen(true);
+  };
+  const handleGiveawayClose = () => {
+    setGiveawayOpen(false);
+  };
+
+  return (
+    <React.Fragment>
+<Button variant="contained" onClick={handleGiveawayOpen}>Trade Shift</Button>
+      <Modal
+        hideBackdrop
+        open={giveawayOpen}
+        onClose={handleGiveawayClose}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description"
+      >
+        <Box sx={{ ...style, width: 300 }}>
+          <h2 id="child-modal-title">Select an option</h2>
+          <p id="child-modal-description">
+            
+          </p>
+          <Stack direction="row" spacing={2}>
+          <Button variant="outlined" color="warning" onClick={handleGiveawayClose}>I'll take Tylenol</Button>
+          <Button variant="outlined" color="error" onClick={handleGiveawayClose}>No, I Insist</Button>
+          </Stack>
+        </Box>
+      </Modal>
+    </React.Fragment>
+  );
+} //-------------- END GIVE AWAY MODAL ------------
 
 function NestedModal({ cDate }) {
   const [open, setOpen] = React.useState(false);
@@ -114,14 +159,13 @@ function NestedModal({ cDate }) {
           <h2 id="parent-modal-title">Options for {cDate.week_day_name} - {cDate.abrv_date}</h2>
           <Stack direction="column" spacing={2}>
             {/* <Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button> */}
-          <TradeModal />
+          <TradeModal cDate={cDate}/>
             <Button variant="contained" onClick={()=>{history.push(`/modify-shift/drop/${cDate.shift_id}`)}}>Give Away</Button>
-          <SickModal />
+          <SickModal cDate={cDate} handleClose={handleClose}/>
+          
           </Stack>
 
-          {/* <p id="parent-modal-description">
-            example text
-          </p> */}
+
         </Box>
       </Modal>
     </div>
