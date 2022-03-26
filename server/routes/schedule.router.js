@@ -3,7 +3,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 router.get('/calendar/:id', (req, res) => {
-  console.log('req.user is', req.user);
+  // console.log('req.user is', req.user);
   let personId = req.params.id
 
   const sqlQueryText = `SELECT "cs"."day_number" AS "id", "cs"."calendar_date", to_char("cs"."calendar_date", 'FMMM/FMDD') AS "abrv_date","cs"."week_number", "cs"."week_day_name",

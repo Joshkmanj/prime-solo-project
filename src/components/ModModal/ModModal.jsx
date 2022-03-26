@@ -23,7 +23,7 @@ const style = {
   pb: 3,
 };
 
-function SickModal({ cDate, handleClose }) {
+function SickModal({ cDate, handleClose, user }) {
   const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false);
   const handleSickOpen = () => {
@@ -35,7 +35,7 @@ function SickModal({ cDate, handleClose }) {
 
   const callInSick = ()=>{
     console.log('calling in sick, shift_id:', cDate.shift_id);
-    dispatch({type:'CALL_IN_SICK', payload: cDate.shift_id})
+    dispatch({type:'CALL_IN_SICK', payload: {shift_id: cDate.shift_id, user_id: user.id}})
     handleSickClose();
     handleClose();
   }
@@ -134,7 +134,7 @@ function GiveAwayModal({ cDate }) {
   );
 } //-------------- END GIVE AWAY MODAL ------------
 
-function NestedModal({ cDate }) {
+function NestedModal({ cDate, user }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -161,7 +161,7 @@ function NestedModal({ cDate }) {
             {/* <Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button> */}
           <TradeModal cDate={cDate}/>
             <Button variant="contained" onClick={()=>{history.push(`/modify-shift/drop/${cDate.shift_id}`)}}>Give Away</Button>
-          <SickModal cDate={cDate} handleClose={handleClose}/>
+          <SickModal cDate={cDate} handleClose={handleClose} user={user}/>
           
           </Stack>
 

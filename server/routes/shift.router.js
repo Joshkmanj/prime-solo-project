@@ -13,7 +13,6 @@ router.put('/sick/:id', (req, res) => {
   
     pool.query(queryText, [shiftId])
     .then(response =>{
-      console.log('Updated')
       res.sendStatus(201)
     }).catch(error =>{
       res.sendStatus(500)

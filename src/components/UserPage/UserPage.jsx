@@ -79,7 +79,7 @@ function UserPage() {
                   <ListItemAvatar>
                  <Avatar sx={{ fontSize: 'medium' }}>{cDate.abrv_date}</Avatar>
                   </ListItemAvatar>
-                <NestedModal cDate={cDate}/>
+                <NestedModal cDate={cDate} user={user}/>
                 </ListItem>
               </React.Fragment>
             ))}
