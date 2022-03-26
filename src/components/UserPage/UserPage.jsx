@@ -79,58 +79,12 @@ function UserPage() {
                   <ListItemAvatar>
                  <Avatar sx={{ fontSize: 'medium' }}>{cDate.abrv_date}</Avatar>
                   </ListItemAvatar>
-                <NestedModal cDate={cDate}/>
-                </ListItem>
-
-
-              </React.Fragment>
-            ))}
-          </List>
-
-
-        </Paper>
-
-{/* Stuff to be integrated */}
-{/* <React.Fragment>
-        <CssBaseline />
-        <Paper square sx={{ pb: '50px' }}>
-          <Typography variant="h5" gutterBottom component="div" sx={{ p: 2, pb: 0 }}>
-            Schedule
-          </Typography>
-          <List sx={{ mb: 2 }}>
-            {calendar.map(cDate => (
-              <React.Fragment key={cDate.id}>
-
-                {/*------- Here's logic that gives a subheader to list items dynamically ------*/}
-                {/* {cDate.week_day_name === 'Monday' && (
-                  <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                    Current Week
-                  </ListSubheader>
-                )} */}
-                {/* {id === 3 && (
-                <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                  Next Week
-                </ListSubheader>
-              )} */}
-
-                {/* <ListItem button onClick={()=>{console.log('You clicked this:', cDate.abrv_date);}}>
-                  <ListItemAvatar>
-                    {cDate.abrv_date.length < 5 ? (<Avatar sx={{ fontSize: 'medium' }}>{cDate.abrv_date}</Avatar>) : (<Avatar sx={{ fontSize: 'small' }}>{cDate.abrv_date}</Avatar>)}
-                  </ListItemAvatar>
-                  {(cDate.shift_time) ? <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ bgcolor: '#9aca38' }}/> : <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} />}
+                <NestedModal cDate={cDate} user={user}/>
                 </ListItem>
               </React.Fragment>
             ))}
           </List>
         </Paper>
-
-
-
-
-      </React.Fragment> */} */}
-{/* ---------------------- */}
-
-
       </React.Fragment>
 
     </>

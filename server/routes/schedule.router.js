@@ -3,6 +3,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 router.get('/calendar/:id', (req, res) => {
+  // console.log('req.user is', req.user);
   let personId = req.params.id
 
   const sqlQueryText = `SELECT "cs"."day_number" AS "id", "cs"."calendar_date", to_char("cs"."calendar_date", 'FMMM/FMDD') AS "abrv_date","cs"."week_number", "cs"."week_day_name",
@@ -61,6 +62,10 @@ router.post('/trade', async (req, res) => {
   const myShiftId = req.body.myShiftId;
   const theirShiftId = req.body.theirShiftId
 
+  if(req.user.id != myId){
+    console.log('in schedule router, user ID does not match myId');
+    res.sendStatus(403)
+  }else{
   // WE NEED TO USE THE SAME CONNECTION FOR ALL QUERIES!!!!
   const connection = await pool.connect(); // THIS ISN'T JUST AN INSTANCE, YOU'RE MAKING A CONNECTION THAT HAS TO BE RELEASED EVENTUALLY!!
   console.log('connection initiated (1/2)');
@@ -71,11 +76,6 @@ router.post('/trade', async (req, res) => {
     await connection.query('BEGIN');
 
     // Here's the SQL text that'll be used for both transactions.
-    // The one problem with this that I'd like to come back and fix after my demo is
-    //  that a malicious user could alter the req.body and update shifts of other users.
-    //  All I would need to fix this is to just have server sided logic check the database
-    //  to ensure the user ID's match the shift ID's and allow only users who are verified
-    //  to be able to alter shifts that they are tied to.
     const sqlText = `UPDATE "schedule"
     SET "staff_id" = $1
     WHERE "id" = $2;`;
@@ -105,7 +105,7 @@ router.post('/trade', async (req, res) => {
     // THIS IS VERY IMPORTANT, OTHERWISE YOU WON'T BE ABLE TO MAKE ANY MORE QUERIES!!
     connection.release(); /// YOU HAVE TO RELEASE AFTER YOU'VE CONNECTED
     console.log('connection released (2/2)');
-  }
+  }}
 });
 
 // router.update('/', async(req,res) => {
