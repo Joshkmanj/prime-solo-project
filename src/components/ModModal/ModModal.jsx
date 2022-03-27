@@ -23,8 +23,8 @@ const style = {
   pb: 3,
 };
 
-function SickModal({ cDate, handleClose, user }) {
-  const dispatch = useDispatch()
+
+function SickModal({ cDate, handleClose, user, dispatch }) {
   const [open, setOpen] = React.useState(false);
   const handleSickOpen = () => {
     setOpen(true);
@@ -91,7 +91,7 @@ function TradeModal({ cDate }) {
             
           </p>
           <Stack direction="row" spacing={2}>
-          <Button variant="outlined" color="warning" onClick={handleTradeClose}>I'll take Tylenol</Button>
+          <Button variant="outlined" color="warning" onClick={handleTradeClose}>Current trade options</Button>
           <Button variant="outlined" color="error" onClick={handleTradeClose}>No, I Insist</Button>
           </Stack>
         </Box>
@@ -135,12 +135,17 @@ function GiveAwayModal({ cDate }) {
 } //-------------- END GIVE AWAY MODAL ------------
 
 function NestedModal({ cDate, user }) {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleGiveAway = () =>{
+    let requestedShift = {...cDate, type:'giveaway'}
+    dispatch({type:'GIVE_AWAY_SHIFT', payload: {cDate:requestedShift, user_id:user.id}})
   };
 
   return (
@@ -160,8 +165,8 @@ function NestedModal({ cDate, user }) {
           <Stack direction="column" spacing={2}>
             {/* <Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button> */}
           <TradeModal cDate={cDate}/>
-            <Button variant="contained" onClick={()=>{history.push(`/modify-shift/drop/${cDate.shift_id}`)}}>Give Away</Button>
-          <SickModal cDate={cDate} handleClose={handleClose} user={user}/>
+            <Button variant="contained" onClick={handleGiveAway}>Give Away</Button>
+          <SickModal cDate={cDate} handleClose={handleClose} user={user} dispatch={dispatch}/>
           
           </Stack>
 
