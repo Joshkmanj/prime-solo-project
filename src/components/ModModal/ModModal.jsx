@@ -35,7 +35,7 @@ function SickModal({ cDate, handleClose, user, dispatch }) {
 
   const callInSick = ()=>{
     console.log('calling in sick, shift_id:', cDate.shift_id);
-    dispatch({type:'CALL_IN_SICK', payload: {shift_id: cDate.shift_id, user_id: user.id}})
+    dispatch({type:'CALL_IN_SICK', payload: {cDate: cDate, user_id: user.id}})
     handleSickClose();
     handleClose();
   }
