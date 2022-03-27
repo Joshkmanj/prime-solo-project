@@ -37,7 +37,7 @@ function NavBar() {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const pages = ['Home', 'Drop a Shift', 'Trade Shift', 'Take a Shift', 'Vacation Request', 'Call in sick', 'About'];
-  const settings = ['Profile', 'Account', 'Random Kanye West Quote', 'Dashboard', 'Logout'];
+  const settings = ['Profile', 'Colleagues', 'Full Calendar', 'Logout'];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -61,6 +61,7 @@ function NavBar() {
       switch (pageName) {
         case 'Home':
           console.log('Switch: routing to -> home View');
+          history.push('/user')
           break;
         case 'Drop a Shift':
           console.log('Switch: routing to -> Give Away Shift View');
