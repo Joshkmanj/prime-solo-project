@@ -2,38 +2,7 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
-// router.get('/open-shifts/:type', (req, res) => {
-//   let userId = req.user.id
-//   let openShiftType = req.params.type
 
-
-//       // First we get the sick calls.
-//     //   const openShiftQuery = `SELECT *, to_char("date", 'FMDay') AS "week_day_name"
-//     // FROM "schedule"
-//     // WHERE "request" IS NOT NULL;`;
-
-//       // Then we collect the shift requests.
-//       const openShiftQuery = `SELECT *, to_char("req_date", 'FMDay') AS "week_day_name", to_char("req_date", 'FMMM/FMDD') AS "abrv_date"
-//     FROM "request_log"
-//     WHERE "employee_id" != $1 AND "type" != 'trade';`;
-
-//       // This gets the open shifts
-//       pool.query(openShiftQuery, [userId])
-
-//       .then(response =>{
-//         console.log('Getting open shifts, response:', response);
-//         res.send(response.rows)
-//       }).catch(error =>{
-//         console.log('Error getting open shifts:', error);
-//       })
-//   }
-
-//   const sqlQuery = `SELECT *, to_char("req_date", 'FMDay') AS "week_day_name", to_char("req_date", 'FMMM/FMDD') AS "abrv_date"
-//   FROM "requests"
-//   WHERE "employee_id" != $1 AND "type" = $2;`;
-
-//   pool.query(sqlQuery, [userId, openShiftType])
-// }); // END OPEN SHIFT GET ROUTE
 
 
 // Update route for sick calls

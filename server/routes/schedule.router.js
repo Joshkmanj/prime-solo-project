@@ -54,6 +54,31 @@ router.get('/user/:id', (req, res) => {
     })
 });
 
+router.get('/open-shifts/:userId', (req, res) => {
+  let employeeId = req.params.userId
+  // let openShiftType = req.params.type
+
+      // Then we collect the shift requests.
+      const openShiftQuery = `SELECT "cs"."day_number" AS "id", "cs"."calendar_date", to_char("cs"."calendar_date", 'FMMM/FMDD') AS "abrv_date","cs"."week_number", 
+      "cs"."week_day_name", "sc"."staff_id", "sc"."shift_time", "sc"."id" AS "shift_id", "sc"."request"
+      FROM "calendar_structure" AS "cs"
+      JOIN "schedule" AS "sc"
+      ON "cs"."calendar_date" = "sc"."date"
+      WHERE "sc"."request" IS NOT NULL AND "sc"."staff_id" != $1
+      ORDER BY "cs"."calendar_date";`;
+
+      // This gets the open shifts
+      pool.query(openShiftQuery, [employeeId])
+
+      .then(response =>{
+        // console.log('Getting open shifts, response:', response.rows);
+        res.send(response.rows)
+      }).catch(error =>{
+        console.log('Error getting open shifts:', error);
+      })
+}); // END OPEN SHIFT GET ROUTE
+
+
 // Shift trade logic. Some updating can be done after initial demonstration.
 router.post('/trade', async (req, res) => {
   // POST route code here

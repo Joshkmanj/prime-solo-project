@@ -29,6 +29,8 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 
 import { useHistory } from 'react-router-dom';
 
+import PickupModal from '../PickupModal/PickupModal'
+
 
 
 function NavBar() {
@@ -149,7 +151,7 @@ function NavBar() {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Profile Photo"
-                    src="https://media-exp1.licdn.com/dms/image/C4E03AQGlycW9Vpes2w/profile-displayphoto-shrink_800_800/0/1647360104027?e=1652918400&v=beta&t=rBnpDU56XgPtE4XOBxYKGHvRK0JdU2VkudtdyU1TM98"
+                    src={user.image_path}
                   />
                 </IconButton>
               </Tooltip>
@@ -222,6 +224,9 @@ function NavBar() {
                   </MenuItem>
                 ))}
               </Menu>
+              <IconButton color="inherit">
+            <SearchIcon />
+          </IconButton>
             </Box>
 
             {/* Here's the logo */}
@@ -268,17 +273,18 @@ function NavBar() {
       <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar>
           <IconButton color="inherit" aria-label="open drawer">
-            <MenuIcon />
+            {/* <MenuIcon /> */}
           </IconButton>
-          <StyledFab color="secondary" aria-label="add">
+          {/* <StyledFab color="secondary" aria-label="add">
             <AddIcon />
-          </StyledFab>
+          </StyledFab> */}
+            <PickupModal user={user}/>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit">
-            <SearchIcon />
+          <Typography>{user.first_name} {user.last_name}</Typography>
           </IconButton>
           <IconButton color="inherit">
-            <MoreIcon />
+            {/* <MoreIcon /> */}
           </IconButton>
         </Toolbar>
       </AppBar>
