@@ -172,7 +172,7 @@ function VaycayModifier({schedule}) {
                 >
                   {schedule.map(day =>(
                     <StyledOption 
-                    key={day.id} 
+                    key={day.shift_id} 
                     value={day.id}
                     >{day.shift_date}</StyledOption>))}
                 </CustomMultiSelect>

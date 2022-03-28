@@ -11,7 +11,7 @@ router.get('/calendar/:id', (req, res) => {
   FROM "calendar_structure" AS "cs"
   LEFT JOIN (SELECT * FROM "schedule" WHERE "staff_id" = $1) AS "sc"
   ON "cs"."calendar_date" = "sc"."date"
-  WHERE "week_number" > 8 AND "week_number" < 20
+  WHERE "week_number" > 11 AND "week_number" < 21
   ORDER BY "cs"."calendar_date";`
 
   // The query text is sent to the database with a sanitized input
@@ -53,6 +53,33 @@ router.get('/user/:id', (req, res) => {
       res.sendStatus(500)
     })
 });
+
+router.get('/open-shifts/:userId', (req, res) => {
+  let employeeId = req.params.userId
+  // let openShiftType = req.params.type
+
+      // Then we collect the shift requests.
+      const openShiftQuery = `SELECT "sc"."id" AS "id", "cs"."calendar_date", to_char("cs"."calendar_date", 'FMMM/FMDD') AS "abrv_date","cs"."week_number", 
+      "cs"."week_day_name", "sc"."staff_id", "sc"."shift_time", "sc"."id" AS "shift_id", "sc"."request", "user"."first_name", "user"."last_name"
+      FROM "schedule" AS "sc"
+      JOIN "calendar_structure" AS "cs"
+      ON "cs"."calendar_date" = "sc"."date"
+      LEFT JOIN "user"
+      ON "sc"."staff_id" = "user"."id"
+      WHERE "request" IS NOT NULL AND ("staff_id" != $1 OR "staff_id" IS NULL)
+      ORDER BY "cs"."calendar_date";`;
+
+      // This gets the open shifts
+      pool.query(openShiftQuery, [employeeId])
+
+      .then(response =>{
+        // console.log('Getting open shifts, response:', response.rows);
+        res.send(response.rows)
+      }).catch(error =>{
+        console.log('Error getting open shifts:', error);
+      })
+}); // END OPEN SHIFT GET ROUTE
+
 
 // Shift trade logic. Some updating can be done after initial demonstration.
 router.post('/trade', async (req, res) => {
