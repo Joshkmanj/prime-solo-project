@@ -20,10 +20,12 @@ function ModifyShift() {
     let { modifier, shiftId } = useParams()
     const user = useSelector((store) => store.user)
     const schedule = useSelector((store) => store.schedule)
+    const openShifts = useSelector((store) => store.openShifts)
 
     useEffect(() => {
         console.log('In useEffect');
-        dispatch({ type: 'FETCH_SHIFTS', payload: user.id })
+        // dispatch({ type: 'FETCH_SHIFTS', payload: user.id })
+        dispatch({ type: 'FETCH_OPEN_SHIFTS', payload: user.id})
     }, [])
 
 

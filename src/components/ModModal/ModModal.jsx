@@ -165,6 +165,11 @@ function NestedModal({ cDate, user }) {
     let requestedShift = { ...cDate, type: 'giveaway' }
     dispatch({ type: 'GIVE_AWAY_SHIFT', payload: { cDate: requestedShift, user_id: user.id } })
   };
+  const handleTradeOpen = () => {
+    console.log('shift ID is:', cDate.shift_id);
+    handleClose();
+    history.push(`/modify-shift/trade/${cDate.shift_id}`)
+  }
 
   return (
     <div>
