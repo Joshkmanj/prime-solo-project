@@ -68,22 +68,22 @@ function NavBar() {
         case 'Drop a Shift':
           console.log('Switch: routing to -> Give Away Shift View');
           // dispatch({type: SET_MODIFIER, payload:'Shift Giveaway'})
-          history.push('/modify-shift/drop/-1')
+          // history.push('/modify-shift/drop/-1')
           break;
         case 'Trade Shift':
           console.log('Switch: routing to -> Trade Shift View');
           // dispatch({type: SET_MODIFIER, payload:'Shift Trade'})
-          history.push('/modify-shift/trade/-1')
+          // history.push('/modify-shift/trade/-1')
           break;
         case 'Take a Shift':
           console.log('Switch: routing to -> Pick Up Shift View');
           // dispatch({type: SET_MODIFIER, payload:'Shift Pick-up'})
-          history.push('/modify-shift/pick-up/-1')
+          // history.push('/modify-shift/pick-up/-1')
           break;
         case 'Vacation Request':
           console.log('Switch: routing to -> Vacation Request View');
           // dispatch({type: SET_MODIFIER, payload:'Vacation Request'})
-          history.push('/modify-shift/vaycay/-1')
+          // history.push('/modify-shift/vaycay/-1')
           break;
         case 'Call in sick':
           console.log('Switch: routing to -> Call in sick View');
@@ -236,7 +236,7 @@ function NavBar() {
               component="div"
               sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
             >
-              Shifty Business
+              Shifty
             </Typography>
 
 
