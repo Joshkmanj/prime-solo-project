@@ -191,7 +191,7 @@ function NestedModal({ cDate, user }) {
             {/* <TradeModal cDate={cDate} /> */}
             <Button variant="contained" onClick={handleTradeOpen}>Trade Shift</Button>
 
-            <Button variant="contained" onClick={handleGiveAway}>Give Away</Button>
+            {/* <Button variant="contained" onClick={handleGiveAway}>Give Away</Button> */}
             <SickModal cDate={cDate} handleClose={handleClose} user={user} dispatch={dispatch} />
 
           </Stack>

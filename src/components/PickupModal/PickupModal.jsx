@@ -2,12 +2,19 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import { useHistory } from 'react-router-dom';
-import SendIcon from '@mui/icons-material/Send';
 import AddIcon from '@mui/icons-material/Add';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+
+import { FixedSizeList } from 'react-window';
+
 import Fab from '@mui/material/Fab';
 import { styled } from '@mui/material/styles';
 
@@ -29,47 +36,80 @@ const style = {
 
 
 
-// function TradeModal({ cDate }) {
-//   const [tradeOpen, setTradeOpen] = React.useState(false);
-//   const handleTradeOpen = () => {
-//     setTradeOpen(true);
-//   };
-//   const handleTradeClose = () => {
-//     setTradeOpen(false);
-//   };
-
-
-//   return (
-//     <React.Fragment>
-//       <Button variant="contained" onClick={handleTradeOpen}>Trade Shift</Button>
-//       <Modal
-//         hideBackdrop
-//         open={tradeOpen}
-//         onClose={handleTradeClose}
-//         aria-labelledby="child-modal-title"
-//         aria-describedby="child-modal-description"
-//       >
-//         <Box sx={{ ...style, width: 300 }}>
-//           <h2 id="child-modal-title">Select an option</h2>
-//           <p id="child-modal-description">
-
-//           </p>
-//           <Stack direction="row" spacing={2}>
-//             <Button variant="outlined" color="warning" onClick={handleTradeClose}>Current trade options</Button>
-//             <Button variant="outlined" color="error" onClick={handleTradeClose}>No, I Insist</Button>
-//           </Stack>
-//         </Box>
-//       </Modal>
-//     </React.Fragment>
-//   );
-// } //-------------- END TRADE SHIFT MODAL ------------
 
 
 
-function PickupModal({ user}) {
-  let convertedShift;
+function TradeModal({ item, user }) {
+  const [tradeOpen, setTradeOpen] = React.useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
+
+  const handleTradeOpen = () => {
+    setTradeOpen(true);
+  };
+  const handleTradeClose = () => {
+    setTradeOpen(false);
+  };
+
+  const handlePickup = () => {
+    console.log('Trying to pick up shift:', item.shift_id, user.id);
+    dispatch({ type: 'PICKUP_SHIFT', payload: { takenShiftId: item.shift_id, userId: user.id } })
+    handleTradeClose();
+  };
+
+  const shiftConverter = (timeframe) => { // This function here converts the string 'day','eve','nht' into their respective definitions
+    if (timeframe == 'day') {
+      // convertedShift = '7:00am - 3:30pm'
+      return '7:00am - 3:30pm';
+    } else if (timeframe == 'eve') {
+      // convertedShift = '3:00pm - 11:30pm';
+      return '3:00pm - 11:30pm';
+    } else if (timeframe == 'nht') {
+      // convertedShift = '11:00pm - 7:30am';
+      return '11:00pm - 7:30am';
+    } else {
+      return false;
+    }
+  };
+
+
+  return (
+    <React.Fragment>
+      <Button variant="contained" onClick={handleTradeOpen} sx={{ width: 9/10 }}
+      >{item.abrv_date} : {shiftConverter(item.shift_time)}</Button>
+      <Modal
+        hideBackdrop
+        open={tradeOpen}
+        onClose={handleTradeClose}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description"
+      >
+        <Box sx={{ ...style, width: 300 }}>
+          {/* <h2 id="child-modal-title">Pick up</h2> */}
+          <h3 id="child-modal-title">Pick up {item.week_day_name} - {item.abrv_date}</h3>
+          <h3>{shiftConverter(item.shift_time)}</h3>
+          <p id="child-modal-description">
+
+          </p>
+          <Stack direction="row" spacing={2}>
+            <Button variant="contained" color="error" onClick={handleTradeClose}>Cancel</Button>
+            <Button variant="contained" color="success" onClick={handlePickup}>Confirm</Button>
+          </Stack>
+        </Box>
+      </Modal>
+    </React.Fragment>
+  );
+} //-------------- END TRADE SHIFT MODAL ------------
+
+
+
+
+
+
+function PickupModal({ user }) {
+  let convertedShift;
+  // const history = useHistory();
+  const openShifts = useSelector((store) => store.openShifts)
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -78,29 +118,9 @@ function PickupModal({ user}) {
     setOpen(false);
   };
 
-  const shiftConverter = () => { // This function here converts the string 'day','eve','nht' into their respective definitions
-    if (cDate.shift_time == 'day') {
-      convertedShift = '7:00am - 3:30pm'
-      return true;
-    } else if (cDate.shift_time == 'eve') {
-      convertedShift = '3:00pm - 11:30pm';
-      return true;
-    } else if (cDate.shift_time == 'nht') {
-      convertedShift = '11:00pm - 7:30am';
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const handleGiveAway = () => {
-    let requestedShift = { ...cDate, type: 'giveaway' }
-    dispatch({ type: 'GIVE_AWAY_SHIFT', payload: { cDate: requestedShift, user_id: user.id } })
-  };
   const handleTradeOpen = () => {
     console.log('shift ID is:', cDate.shift_id);
     handleClose();
-    history.push(`/modify-shift/trade/${cDate.shift_id}`)
   }
 
   const StyledFab = styled(Fab)({
@@ -114,26 +134,48 @@ function PickupModal({ user}) {
 
   return (
     <div>
-      {/* <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }}/> */}
       <StyledFab color="secondary" aria-label="add">
-      <AddIcon onClick={handleOpen}/>
-          </StyledFab>
+        <AddIcon onClick={handleOpen} />
+      </StyledFab>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
-        <Box
-          sx={{ ...style, width: 400 }}
-        >
+        aria-describedby="parent-modal-description">
+        <Box sx={{ ...style, width: 400 }}>
           <h2 id="parent-modal-title">Open Shifts</h2>
-          <Stack direction="column" spacing={2}>
-            {/* <Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button> */}
 
+
+          <List
+            sx={{
+              width: '100%',
+              maxWidth: 360,
+              bgcolor: 'background.paper',
+              position: 'relative',
+              overflow: 'auto',
+              maxHeight: 300,
+              '& ul': { padding: 0 },
+            }} subheader={<li />}
+          >
+            {/* {[0, 1, 2, 3, 4].map((sectionId) => (<li key={`section-${sectionId}`}> */}
+                <ul>
+                  {/* <ListSubheader>{`Here's what's open, ${user.first_name}`}</ListSubheader> */}
+                  {openShifts.map((item, index) => (
+                    <ListItem key={index}>
+                      {/* <ListItemText primary={`${item.abrv_date} ${shiftConverter(item.shift_time)}`} /> */}
+                      <TradeModal item={item} user={user}/>
+                    </ListItem>
+                  ))}
+                </ul>
+              {/* </li> */}
+            {/* // ))} */}
+          </List>
+
+          <Stack direction="row" spacing={2}>
+            {/* <Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button> */}
             {/* <TradeModal cDate={cDate} /> */}
-            <Button variant="contained" onClick={handleTradeOpen}>Trade Shift</Button>
-            <Button variant="contained" onClick={handleGiveAway}>Give Away</Button>
+            <Button variant="contained" color='error' onClick={handleClose} sx={{ mt:2}}>Back</Button>
+            {/* <Button variant="contained" onClick={handlePickup}>confirm</Button> */}
           </Stack>
 
 

@@ -59,12 +59,14 @@ router.get('/open-shifts/:userId', (req, res) => {
   // let openShiftType = req.params.type
 
       // Then we collect the shift requests.
-      const openShiftQuery = `SELECT "cs"."day_number" AS "id", "cs"."calendar_date", to_char("cs"."calendar_date", 'FMMM/FMDD') AS "abrv_date","cs"."week_number", 
-      "cs"."week_day_name", "sc"."staff_id", "sc"."shift_time", "sc"."id" AS "shift_id", "sc"."request"
-      FROM "calendar_structure" AS "cs"
-      JOIN "schedule" AS "sc"
+      const openShiftQuery = `SELECT "sc"."id" AS "id", "cs"."calendar_date", to_char("cs"."calendar_date", 'FMMM/FMDD') AS "abrv_date","cs"."week_number", 
+      "cs"."week_day_name", "sc"."staff_id", "sc"."shift_time", "sc"."id" AS "shift_id", "sc"."request", "user"."first_name", "user"."last_name"
+      FROM "schedule" AS "sc"
+      JOIN "calendar_structure" AS "cs"
       ON "cs"."calendar_date" = "sc"."date"
-      WHERE "sc"."request" IS NOT NULL AND "sc"."staff_id" != $1
+      LEFT JOIN "user"
+      ON "sc"."staff_id" = "user"."id"
+      WHERE "request" IS NOT NULL AND ("staff_id" != $1 OR "staff_id" IS NULL)
       ORDER BY "cs"."calendar_date";`;
 
       // This gets the open shifts

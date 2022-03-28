@@ -3,6 +3,23 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 
+// Update route for pickup shifts
+router.put('/pickup/:staffId/:shiftId',  (req, res) => {
+  let shiftTakersId = req.params.staffId;
+  let shiftId = req.params.shiftId
+  console.log('pickup request for user/shift', shiftTakersId, shiftId);
+
+  const pickupQuery = `UPDATE "schedule"
+  SET "request" = NULL, "staff_id" = $1
+  WHERE "id"=$2;`;
+
+  pool.query(pickupQuery, [shiftTakersId, shiftId])
+  .then(response => {
+    res.sendStatus(201)
+  }).catch(error => {
+    res.sendStatus(500)
+  })
+})
 
 
 // Update route for sick calls

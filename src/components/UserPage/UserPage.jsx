@@ -43,6 +43,7 @@ function UserPage() {
   useEffect(() => {
     console.log('In useEffect');
     dispatch({ type: 'FETCH_CALENDAR', payload: user.id })
+    dispatch({ type: 'FETCH_OPEN_SHIFTS', payload: user.id })
   }, [])
 
 
