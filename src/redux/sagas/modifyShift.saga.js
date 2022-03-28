@@ -15,11 +15,11 @@ function* sickCall(action){
     }
 }
 function* giveAwayShift(action){
-      let shift = action.payload.cDate
+      let givenShift = action.payload.cDate
       let userId = action.payload.user_id
-      console.log(`giveAwayShift: Giving away shiftId: ${shift} for user ID: ${userId} (1/2)`); // PUT route test log
+      console.log(`giveAwayShift: Giving away shiftId: ${givenShift.shift_id} for user ID: ${userId} (1/2)`); // PUT route test log
       try {
-        yield axios.post('/api/shift/giveaway', shift);
+        yield axios.post(`/api/shift/giveaway`, givenShift);
         console.log('giveAwayShift: response from server, success! (2/2)'); // GET route test log
         yield put({ type: 'FETCH_CALENDAR', payload: userId });
     } catch {

@@ -2,72 +2,39 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
-router.get('/open-shifts/:type', async (req, res) => {
-  let userId = req.user.id
-  let openShiftType = req.params.type
+// router.get('/open-shifts/:type', (req, res) => {
+//   let userId = req.user.id
+//   let openShiftType = req.params.type
 
-  if (openShiftType === 'trade') { // If a user is just looking for a shift trade, they only need one sql query
-    const sqlQuery = `SELECT *, to_char("req_date", 'FMDay') AS "week_day_name", to_char("req_date", 'FMMM/FMDD') AS "abrv_date"
-    FROM "requests"
-    WHERE "employee_id" != $1 AND "type" = 'trade';`;
 
-    pool.query(sqlQuery, [userId])
+//       // First we get the sick calls.
+//     //   const openShiftQuery = `SELECT *, to_char("date", 'FMDay') AS "week_day_name"
+//     // FROM "schedule"
+//     // WHERE "request" IS NOT NULL;`;
 
-  } else if (openShiftType === 'pickup') { // If the user is looking for a shift to pickup, they'll recieve the shifts in a more complicated manner
+//       // Then we collect the shift requests.
+//       const openShiftQuery = `SELECT *, to_char("req_date", 'FMDay') AS "week_day_name", to_char("req_date", 'FMMM/FMDD') AS "abrv_date"
+//     FROM "request_log"
+//     WHERE "employee_id" != $1 AND "type" != 'trade';`;
 
-    // WE NEED TO USE THE SAME CONNECTION FOR ALL QUERIES!!!!
-    const connection = await pool.connect(); // THIS ISN'T JUST AN INSTANCE, YOU'RE MAKING A CONNECTION THAT HAS TO BE RELEASED EVENTUALLY!!
-    console.log('connection initiated (1/2)');
+//       // This gets the open shifts
+//       pool.query(openShiftQuery, [userId])
 
-    // This is going to be basic javascript "try"/"catch"
-    try {
-      // Here we start the transaction with a "BEGIN"
-      await connection.query('BEGIN');
+//       .then(response =>{
+//         console.log('Getting open shifts, response:', response);
+//         res.send(response.rows)
+//       }).catch(error =>{
+//         console.log('Error getting open shifts:', error);
+//       })
+//   }
 
-      // First we get the sick calls.
-      const sickCallsQuery = `SELECT *
-    FROM "schedule"
-    WHERE "staff_id" IS NULL;`;
+//   const sqlQuery = `SELECT *, to_char("req_date", 'FMDay') AS "week_day_name", to_char("req_date", 'FMMM/FMDD') AS "abrv_date"
+//   FROM "requests"
+//   WHERE "employee_id" != $1 AND "type" = $2;`;
 
-      // Then we collect the shift requests.
-      const openShiftQuery = `SELECT *, to_char("req_date", 'FMDay') AS "week_day_name", to_char("req_date", 'FMMM/FMDD') AS "abrv_date"
-    FROM "requests"
-    WHERE "employee_id" != $1 AND "type" = 'trade';`;
+//   pool.query(sqlQuery, [userId, openShiftType])
+// }); // END OPEN SHIFT GET ROUTE
 
-      // This gets the sick calls
-      await connection.query(sickCallsQuery);
-      // This gets the open shifts
-      await connection.query(openShiftQuery, [userId]);
-
-      // Lastly we need code that says "commit" to complete the transaction.
-      await connection.query('COMMIT');
-
-      // Returning success code to the client
-      res.sendStatus(200)
-    } catch (error) {
-      // In case of transaction failure, the changes are rolled back
-      await connection.query('ROLLBACK');
-
-      // Sending error messages to the server and client
-      console.log('transaction error! Rolling back!', error);
-      res.sendStatus(500);
-
-    } finally {
-      // "Finally" always runs, both after a succesful try, and after a catch
-      // This will put the client connection back in the pool.
-      // THIS IS VERY IMPORTANT, OTHERWISE YOU WON'T BE ABLE TO MAKE ANY MORE QUERIES!!
-      connection.release(); /// YOU HAVE TO RELEASE AFTER YOU'VE CONNECTED
-      console.log('connection released (2/2)');
-    }
-
-  }
-
-  const sqlQuery = `SELECT *, to_char("req_date", 'FMDay') AS "week_day_name", to_char("req_date", 'FMMM/FMDD') AS "abrv_date"
-  FROM "requests"
-  WHERE "employee_id" != $1 AND "type" = $2;`;
-
-  pool.query(sqlQuery, [userId, openShiftType])
-});
 
 // Update route for sick calls
 router.put('/sick/:staffId', async (req, res) => {
@@ -145,21 +112,59 @@ router.put('/sick/:staffId', async (req, res) => {
 });
 
 // Post route for putting a shift up for giveaway
-router.post('/giveaway', (req, res) => {
+router.post('/giveaway', async (req, res) => {
   console.log('inside giveaway, req.body is:', req.body);
-  // let userId = req.user.id
   let shift = req.body
 
-  const sqlText = `INSERT INTO "requests" ("employee_id", "date_id", "req_shift_id", "req_date","req_shift_time", "type")
-  VALUES ($1, $2, $3, $4, $5, $6);`;
 
-  pool.query(sqlText, [shift.staff_id, shift.id, shift.shift_id, shift.calendar_date, shift.shift_time, shift.type])
-    .then(response => {
-      res.sendStatus(201)
-    }).catch(error => {
-      console.log('Shift giveaway error:', error);
-      res.sendStatus(500)
-    })
+  if(req.user.id != shift.staff_id){
+    console.log('in schedule router, user ID does not match myId');
+    // res.sendStatus(403) /// This is currently disabled so it doesn't accidentally hinder my presentation
+  }
+  // else{ /// This is currently disabled so it doesn't accidentally hinder my presentation
+
+  const connection = await pool.connect();
+  console.log('connection initiated (1/2)');
+
+  try {
+    await connection.query('BEGIN');
+
+    // First we post this request to the log
+    const sqlText = `INSERT INTO "request_log" ("employee_id", "date_id", "req_shift_id", "req_date","req_shift_time", "type")
+    VALUES ($1, $2, $3, $4, $5, 'giveaway');`;
+  
+    await connection.query(sqlText, [shift.staff_id, shift.id, shift.shift_id, shift.calendar_date, shift.shift_time])
+
+
+    // Next we can update the staffing sheet to show the shift is being requested off
+    const giveawayTxt = `UPDATE "schedule"
+    SET "request" = 'giveaway'
+    WHERE "id"=$1;`;
+
+    await connection.query(giveawayTxt, [shift.shift_id]);
+
+    // Lastly we need code that says "commit" to complete the transaction.
+    await connection.query('COMMIT');
+
+    // Returning success code to the client
+    res.sendStatus(200)
+  } catch (error) {
+    // In case of transaction failure, the changes are rolled back
+    await connection.query('ROLLBACK');
+
+    // Sending error messages to the server and client
+    console.log('transaction error! Rolling back!', error);
+    res.sendStatus(500);
+
+  } finally {
+    // "Finally" always runs, both after a succesful try, and after a catch
+    // This will put the client connection back in the pool.
+    // THIS IS VERY IMPORTANT, OTHERWISE YOU WON'T BE ABLE TO MAKE ANY MORE QUERIES!!
+    connection.release(); /// YOU HAVE TO RELEASE AFTER YOU'VE CONNECTED
+    console.log('connection released (2/2)');
+  }
+// } // End of Else statement // currently disabled
+
 });
 
 module.exports = router;
