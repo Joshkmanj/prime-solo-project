@@ -54,6 +54,8 @@ function RegisterForm() {
       payload: {
         username: username,
         password: password,
+        shiftTime: shiftTime,
+        shiftSchedule: shiftSchedule,
       },
     });
   }; // end registerUser
@@ -68,15 +70,11 @@ function RegisterForm() {
   };
 
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handlePasswordChange = (prop) => (event) => {
+    setPassword( event.target.value);
   };
 
   const handleClickShowPassword = () => {
-    // setValues({
-    //   ...values,
-    //   showPassword: !values.showPassword,
-    // });
     setPasswordVisibility(!passwordVisibility)
   };
   const handleMouseDownPassword = (event) => {
@@ -137,6 +135,8 @@ function RegisterForm() {
                 required
                 id="outlined-required"
                 label="Username"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
               />
 
 
@@ -149,17 +149,17 @@ function RegisterForm() {
                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-password"
-                  type={values.showPassword ? 'text' : 'password'}
-                  value={values.password}
+                  type={passwordVisibility ? 'text' : 'password'}
+                  value={password}
                   name="Password"
-                  onChange={handleChange('password')}
+                  onChange={handlePasswordChange('password')}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
                         edge="end">
-                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                        {passwordVisibility ? <Visibility/> : <VisibilityOff/> }
                       </IconButton>
                     </InputAdornment>} label="Password" />
               </FormControl>
@@ -175,7 +175,6 @@ function RegisterForm() {
                   onChange={handleScheduleChange}>
                   <MenuItem value={1}>Schedule A</MenuItem>
                   <MenuItem value={2}>Schedule B</MenuItem>
-                  <MenuItem value={3}>Schedule C</MenuItem>
                 </Select>
               </FormControl>
             </Box>
