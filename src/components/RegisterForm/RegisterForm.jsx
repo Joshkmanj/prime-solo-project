@@ -9,24 +9,24 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import CardMedia from '@mui/material/CardMedia';
 
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import NativeSelect from '@mui/material/NativeSelect';
 
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import FormHelperText from '@mui/material/FormHelperText';
 //---------< // END MUI imports >----------------
 
 
@@ -46,14 +46,17 @@ function RegisterForm() {
   const errors = useSelector((store) => store.errors);
   // --------< // END Variables >--------
 
+ 
   const dispatch = useDispatch();
+
 
   const registerUser = (event) => {
     event.preventDefault();
-
     dispatch({
       type: 'REGISTER',
       payload: {
+        firstname: firstname,
+        lastname: lastname,
         username: username,
         password: password,
         shiftTime: shiftTime,
@@ -72,9 +75,9 @@ function RegisterForm() {
   };
 
 
-  const handlePasswordChange = (prop) => (event) => {
-    setPassword(event.target.value);
-  };
+  // const handlePasswordChange = (prop) => (event) => {
+  //   setPassword(event.target.value);
+  // };
 
   const handleClickShowPassword = () => {
     setPasswordVisibility(!passwordVisibility)
@@ -91,7 +94,9 @@ function RegisterForm() {
   return (
     <div>
       <Card sx={{ maxWidth: 345 }}>
-        <form className="formPanel" onSubmit={registerUser}>
+        <form
+        // className="formPanel" 
+        onSubmit={registerUser}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
               Register User
@@ -147,7 +152,7 @@ function RegisterForm() {
                   type={passwordVisibility ? 'text' : 'password'}
                   value={password}
                   name="Password"
-                  onChange={handlePasswordChange('password')}
+                  onChange={(event) => setPassword(event.target.value)}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton aria-label="toggle password visibility"
