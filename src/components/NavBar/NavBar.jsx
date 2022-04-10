@@ -218,9 +218,7 @@ function NavBar() {
                   <MenuItem key={page}
                     // This adds functionality of the menu items
                     onClick={() => { handleCloseNavMenu(page) }}>
-                    <Typography
-                      textAlign="center"
-                    >{page}</Typography>
+                    <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -234,8 +232,7 @@ function NavBar() {
               variant="h6"
               noWrap
               component="div"
-              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-            >
+              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               Shifty
             </Typography>
 
