@@ -1,9 +1,4 @@
-/**
-* You'll need to use environment variables in order to deploy your
-* pg-pool configuration to Heroku.
-* It will look something like this:
-**/
-/* the only line you likely need to change is
+/* If this project was downloaded to a new machine, the only line you likely need to change is
  database: 'prime_app',
  change `prime_app` to the name of your database, and you should be all set!
 */

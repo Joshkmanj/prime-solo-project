@@ -35,6 +35,8 @@ function RegisterForm() {
 
   // ------------< Variables >-----------
   // local state: These variables hold the username and password before they are dispatched.
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [shiftTime, setShiftTime] = useState('');
@@ -71,7 +73,7 @@ function RegisterForm() {
 
 
   const handlePasswordChange = (prop) => (event) => {
-    setPassword( event.target.value);
+    setPassword(event.target.value);
   };
 
   const handleClickShowPassword = () => {
@@ -88,8 +90,6 @@ function RegisterForm() {
 
   return (
     <div>
-
-      {/* ---------------------MUI------------------------- */}
       <Card sx={{ maxWidth: 345 }}>
         <form className="formPanel" onSubmit={registerUser}>
           <CardContent>
@@ -101,54 +101,49 @@ function RegisterForm() {
                 {errors.registrationMessage}
               </h3>
             )}
-            <div>
-              <label htmlFor="username">
-                Usernannnnme:
-                <input
-                  type="text"
-                  name="username"
+
+
+
+            <Box>
+              {/* -------------< Firstname Input >-------------- */}
+              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <TextField
+                  id="firstname-input"
+                  label="Firstname"
+                  value={firstname}
+                  onChange={(event) => setFirstname(event.target.value)} />
+              </FormControl>
+              {/* -------------< // END Firstname Input >-------------- */}
+
+              {/* -------------< Lastname Input >-------------- */}
+              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <TextField
+                  id="lastname-input"
+                  label="Lastname"
+                  value={lastname}
+                  onChange={(event) => setLastname(event.target.value)} />
+              </FormControl>
+              {/* -------------< // END Lastname Input >-------------- */}
+            </Box>
+
+            <Box sx={{ minWidth: 120 }}>
+              {/* -------------< Username Input >-------------- */}
+              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <TextField
+                  required
+                  id="username-input"
+                  label="Username"
                   value={username}
-                  required
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-              </label>
-            </div>
-
-
-
-            <div>
-              <label htmlFor="password">
-                Password:
-                <input
-                  type="password"
-                  name="password"
-                  value={password}
-                  required
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-              </label>
-            </div>
-
-
-
-              <TextField
-                required
-                id="outlined-required"
-                label="Username"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-              />
-
-
-
-
+                  onChange={(event) => setUsername(event.target.value)} />
+              </FormControl>
+              {/* -------------< // END Username Input >-------------- */}
 
               {/* -------------< Password Input >-------------- */}
-            <Box sx={{ minWidth: 120 }}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
-                  id="outlined-adornment-password"
+                  required
+                  id="password-input"
                   type={passwordVisibility ? 'text' : 'password'}
                   value={password}
                   name="Password"
@@ -159,37 +154,39 @@ function RegisterForm() {
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
                         edge="end">
-                        {passwordVisibility ? <Visibility/> : <VisibilityOff/> }
+                        {passwordVisibility ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>} label="Password" />
               </FormControl>
-            </Box>
-            {/* -------------< // END Password Input >-------------- */}
+              {/* -------------< // END Password Input >-------------- */}
+              {/* </Box> */}
 
-            {/* -------------< Shift Schedule selection >-------------- */}
-            <Box sx={{ minWidth: 120 }}>
+              {/* -------------< Shift Schedule selection >-------------- */}
+              {/* <Box sx={{ minWidth: 120 }}> */}
               <FormControl fullWidth variant="standard">
                 <InputLabel id="Schedule-picker">Shift Schedule</InputLabel>
                 <Select labelId="Schedule-picker" id="Schedule-picker"
                   value={shiftSchedule}
-                  onChange={handleScheduleChange}>
+                  onChange={handleScheduleChange}
+                  required>
                   <MenuItem value={1}>Schedule A</MenuItem>
                   <MenuItem value={2}>Schedule B</MenuItem>
                 </Select>
               </FormControl>
-            </Box>
-            {/* -------------< // END Shift Schedule selection >-------------- */}
+              {/* </Box> */}
+              {/* -------------< // END Shift Schedule selection >-------------- */}
 
 
-            {/* -------------< Shift Time selection >-------------- */}
-            <Box sx={{ minWidth: 120 }}>
+              {/* -------------< Shift Time selection >-------------- */}
+              {/* <Box sx={{ minWidth: 120 }}> */}
               <FormControl fullWidth variant="standard">
                 <InputLabel htmlFor="shift-time-picker">
                   Shift Time
                 </InputLabel>
                 <Select labelId="Schedule-picker" id="Schedule-picker"
                   value={shiftTime}
-                  onChange={handleTimeChange}>
+                  onChange={handleTimeChange}
+                  required>
                   <MenuItem value={'day'}>7:00am - 3:30pm</MenuItem>
                   <MenuItem value={'eve'}>3:00pm - 11:30pm</MenuItem>
                   <MenuItem value={'nht'}>11:00pm - 7:30am</MenuItem>
