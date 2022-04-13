@@ -3,6 +3,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 
+// ===============================================< P i c k u p   S h i f t >===============================================
 // Update route for pickup shifts
 router.put('/pickup/:staffId/:shiftId',  (req, res) => {
   let shiftTakersId = req.params.staffId;
@@ -19,9 +20,10 @@ router.put('/pickup/:staffId/:shiftId',  (req, res) => {
   }).catch(error => {
     res.sendStatus(500)
   })
-})
+})// -------------------------------------------<  E N D   P i c k u p   S h i f t  >------------------------------------------------
 
 
+// =================================================<  S i c k   C a l l  >=================================================
 // Update route for sick calls
 router.put('/sick/:staffId', async (req, res) => {
   let sickShiftId = req.body.shift_id
@@ -95,9 +97,9 @@ router.put('/sick/:staffId', async (req, res) => {
     connection.release(); /// YOU HAVE TO RELEASE AFTER YOU'VE CONNECTED
     console.log('connection released (2/2)');
   }
-});
+});// -------------------------------------------<  E N D   S i c k   C a l l  >------------------------------------------------
 
-// Post route for putting a shift up for giveaway
+// ===========================================<  G i v e a w a y   s h i f t  >===========================================
 router.post('/giveaway', async (req, res) => {
   console.log('inside giveaway, req.body is:', req.body);
   let shift = req.body
@@ -150,7 +152,6 @@ router.post('/giveaway', async (req, res) => {
     console.log('connection released (2/2)');
   }
 // } // End of Else statement // currently disabled
-
-});
+}); // -------------------------------------------<  E N D   G i v e a w a y   s h i f t  >------------------------------------------------
 
 module.exports = router;

@@ -2,10 +2,11 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
+// =======================================<  G e t  C a l e n d a r  >===============================================
 router.get('/calendar/:id', (req, res) => {
   // console.log('req.user is', req.user);
   let personId = req.params.id
-
+  
   const sqlQueryText = `SELECT "cs"."day_number" AS "id", "cs"."calendar_date", to_char("cs"."calendar_date", 'FMMM/FMDD') AS "abrv_date","cs"."week_number", "cs"."week_day_name",
   "sc"."staff_id", "sc"."shift_time", "sc"."id" AS "shift_id"
   FROM "calendar_structure" AS "cs"
@@ -13,18 +14,19 @@ router.get('/calendar/:id', (req, res) => {
   ON "cs"."calendar_date" = "sc"."date"
   WHERE "week_number" > 11 AND "week_number" < 21
   ORDER BY "cs"."calendar_date";`
-
+  
   // The query text is sent to the database with a sanitized input
   pool.query(sqlQueryText, [personId])
-    .then((response) => {
-      // console.log('response:',response.rows); // test log for when new queries are being tested.
-      res.send(response.rows)
-    }).catch((error) => {
-      console.log('Database error:', error);
-      res.sendStatus(500)
-    })
-});
+  .then((response) => {
+    // console.log('response:',response.rows); // test log for when new queries are being tested.
+    res.send(response.rows)
+  }).catch((error) => {
+    console.log('Database error:', error);
+    res.sendStatus(500)
+  })
+});// ----------------------------------<  E N D   G e t   C a l e n d a r  >----------------------------------------
 
+// =====================================<  G e t   M y   S h i f t s  >===============================================
 // Gets a user's scheduled shifts based off their ID.
 router.get('/user/:id', (req, res) => {
   // This collects the user's ID from the GET request params
@@ -52,8 +54,10 @@ router.get('/user/:id', (req, res) => {
       console.log('Database error:', error);
       res.sendStatus(500)
     })
-});
+});// ----------------------------------<  E N D   G e t   M y   S h i f t s  >-----------------------------------------
 
+
+// =====================================<  G e t  O p e n  S h i f t s  >===============================================
 router.get('/open-shifts/:userId', (req, res) => {
   let employeeId = req.params.userId
   // let openShiftType = req.params.type
@@ -78,9 +82,10 @@ router.get('/open-shifts/:userId', (req, res) => {
       }).catch(error =>{
         console.log('Error getting open shifts:', error);
       })
-}); // END OPEN SHIFT GET ROUTE
+});// ----------------------------------<  E N D  G e t  O p e n  S h i f t s  >-----------------------------------------
 
 
+// =====================================<  S h i f t   T r a d e  >===============================================
 // Shift trade logic. Some updating can be done after initial demonstration.
 router.post('/trade', async (req, res) => {
   // POST route code here
@@ -133,7 +138,7 @@ router.post('/trade', async (req, res) => {
     connection.release(); /// YOU HAVE TO RELEASE AFTER YOU'VE CONNECTED
     console.log('connection released (2/2)');
   }}
-});
+});// ----------------------------------<  E N D   S h i f t   T r a d e  >-----------------------------------------
 
 // router.update('/', async(req,res) => {
 
