@@ -21,11 +21,12 @@ function ModifyShift() {
     const user = useSelector((store) => store.user)
     const schedule = useSelector((store) => store.schedule)
     const openShifts = useSelector((store) => store.openShifts)
+    const today = useSelector((store) => store.todaysDate)
 
     useEffect(() => {
         console.log('In useEffect');
         // dispatch({ type: 'FETCH_SHIFTS', payload: user.id })
-        dispatch({ type: 'FETCH_OPEN_SHIFTS', payload: user.id})
+        // dispatch({ type: 'FETCH_OPEN_SHIFTS', payload: user.id})
     }, [])
 
 
@@ -174,15 +175,19 @@ function ModifyShift() {
     //   };
     //----------- MULTISELECT-----------------------------
 
+    const testHandler = () => {
+        // console.log('Test button clicked');
+        dispatch({ type: 'FETCH_CURRENT_DATE' })
+    }
+
 
     return (
         <>
             <NavBar />
             <h1>Mod:{modifier}, shiftId:{shiftId}</h1>
-            {(modifier === 'vaycay') && <VaycayModifier schedule={schedule} />}
-
-
-
+            {/* {(modifier === 'vaycay') && <VaycayModifier schedule={schedule} />} */}
+            <button onClick={testHandler}>Test button</button>
+            <p>It is week: of the pay period</p>
         </>
     )
 }

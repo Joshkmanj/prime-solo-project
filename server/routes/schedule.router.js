@@ -140,8 +140,23 @@ router.post('/trade', async (req, res) => {
   }}
 });// ----------------------------------<  E N D   S h i f t   T r a d e  >-----------------------------------------
 
-// router.update('/', async(req,res) => {
+// =======================================<  G e t   T o d a y 's   D a t e  >===============================================
+router.get('/today', (req, res) => {
+  
+  const todaysDateQuery = `SELECT to_char(CURRENT_TIMESTAMP, 'FMMM/FMDD/YYYY') AS "current_date", 
+  to_char(CURRENT_TIMESTAMP, 'FMDDD') AS "current_day_number", to_char(CURRENT_TIMESTAMP, 'IDDD') AS "current_iso_day_number", 
+  to_char(current_timestamp, 'IW') AS "current_iso_week_number", to_char(CURRENT_TIMESTAMP, 'FMDay') AS "week_day_name";`;
+  
+  // The query text is sent to the database with a sanitized input
+  pool.query(todaysDateQuery)
+  .then((response) => {
+    console.log('response:',response.rows[0]); // test log
+    res.send(response.rows[0])
+  }).catch((error) => {
+    console.log('Database error:', error);
+    res.sendStatus(500)
+  })
+});// ----------------------------------<  E N D   G e t   T o d a y 's   D a t e  >----------------------------------------
 
-// })
 
 module.exports = router;
