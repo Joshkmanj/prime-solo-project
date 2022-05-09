@@ -173,7 +173,10 @@ function NestedModal({ cDate, user }) {
 
   return (
     <div>
-      {(shiftConverter(cDate.shift_time)) ? <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={convertedShift} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }} /> : <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ width: 270, borderRadius: '5px', p: 1 }} />}
+      {(shiftConverter(cDate.shift_time)) ? 
+      <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={convertedShift} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }} /> 
+      : 
+      <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ width: 270, borderRadius: '5px', p: 1 }} />}
       <Modal
         open={open}
         onClose={handleClose}

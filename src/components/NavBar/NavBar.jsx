@@ -73,7 +73,7 @@ function NavBar() {
         case 'Trade Shift':
           console.log('Switch: routing to -> Trade Shift View');
           // dispatch({type: SET_MODIFIER, payload:'Shift Trade'})
-          // history.push('/modify-shift/trade/-1')
+          history.push('/modify-shift/trade/-1')
           break;
         case 'Take a Shift':
           console.log('Switch: routing to -> Pick Up Shift View');

@@ -143,15 +143,17 @@ router.post('/trade', async (req, res) => {
 // =======================================<  G e t   T o d a y 's   D a t e  >===============================================
 router.get('/today', (req, res) => {
   
-  const todaysDateQuery = `SELECT to_char(CURRENT_TIMESTAMP, 'FMMM/FMDD/YYYY') AS "current_date", 
-  to_char(CURRENT_TIMESTAMP, 'FMDDD') AS "current_day_number", to_char(CURRENT_TIMESTAMP, 'IDDD') AS "current_iso_day_number", 
-  to_char(current_timestamp, 'IW') AS "current_iso_week_number", to_char(CURRENT_TIMESTAMP, 'FMDay') AS "week_day_name";`;
+  const todaysDateQuery = `SELECT array_remove(array["mo1","tu1","we1","th1","fr1","sa1","su1",
+  "mo2","tu2","we2","th2","fr2","sa2","su2",
+  "mo3","tu3","we3","th3","fr3","sa3","su3"], NULL) as "shift_array"
+  FROM "block"
+  WHERE "id" = 3;`;
   
   // The query text is sent to the database with a sanitized input
   pool.query(todaysDateQuery)
   .then((response) => {
-    console.log('response:',response.rows[0]); // test log
-    res.send(response.rows[0])
+    console.log('response:',response.rows[0].shift_array); // test log
+    res.send(response.rows[0].shift_array)
   }).catch((error) => {
     console.log('Database error:', error);
     res.sendStatus(500)
