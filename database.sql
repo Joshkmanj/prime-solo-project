@@ -156,15 +156,39 @@ SELECT to_date(('1/'|| to_char(current_date,'IYYY')), 'IDDD/IYYY');
 
 
 --============================  BLOCK SCHEDULE  ============================
--- Get relevant block schedule data for building schedule
-SELECT "user"."shift_timeframe",
-"last_calendar_render", "next_calendar_render", "repetition_interval",
-array_remove(array["mo1","tu1","we1","th1","fr1","sa1","su1",
-"mo2","tu2","we2","th2","fr2","sa2","su2",
-"mo3","tu3","we3","th3","fr3","sa3","su3"], NULL) AS "block_schedule"
+-- This turns block schedule columns into an easily repeatable and maleable stack of rows
+SELECT
+  unnest(
+    string_to_array( -- split string into array using delimiter
+      left(  -- take the left x amount of characters
+        repeat(-- make x copies
+          array_to_string( -- Turn array into a string
+            array["tu1","we1","su3"]
+          ,',')||',' -- This turns the array into a string with the 
+        ,3) -- The multiplication factor for string clones
+      ,17) -- left x amount
+    , ',') -- the delimiter for splitting string to array
+  )
+FROM "block"
+WHERE "id" = 1;
+
+
+-- This creates a 42 row (6 week long) daily incrementing calendar of dates that are based off of a "re-rendering date".
+-- The 3 columns from this query will fulfill the requirements of an insert into "schedule" statement.
+SELECT 
+	generate_series(
+		("next_calendar_render")::timestamp,
+		("next_calendar_render" + (42 - 1))::timestamp, -- The "42 - 1" is purposely not shortened down due to the fact that the 42 day interval period may need to be a dynamic variable in the future.
+		interval '1 day'
+	) AS "date",
+
+	"user"."id" AS "staff_id", -- Get user's ID
+	"user"."shift_timeframe" AS "shift_time" -- Get user's shift time
+
 FROM "block"
 JOIN "user" ON "block"."id" = "user"."block_id"
-WHERE "user"."id" = 1;
+WHERE "user"."id" = 1 -- Removing this line will make it a global shift update and not just for one employee!
+;
 
 
 --============================  Build the schedule for all staff members  ============================
