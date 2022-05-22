@@ -191,6 +191,45 @@ WHERE "user"."id" = 1 -- Removing this line will make it a global shift update a
 ;
 
 
+
+-- This selects the three columns that are needed for the insert statement, and utilizes a fourth column to filter out the days an employee is NOT scheduled to work.
+SELECT "date", "staff_id", "shift_time"
+FROM (
+ SELECT -- This subquery selects and generates four columns of data.
+ 
+     generate_series(
+     ("next_calendar_render")::timestamp,
+     ("next_calendar_render" + (42 - 1))::timestamp,
+     interval '1 day') 
+   AS "date"
+
+     ,unnest(string_to_array(left(repeat(array_to_string(
+     array["mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2","mo3","tu3","we3","th3","fr3","sa3","su3"
+     ,"mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2","mo3","tu3","we3","th3","fr3","sa3","su3"]
+     ,',')||',',3),83), ',')) 
+   AS "working_today" -- This data is used to tell if an employee is supposed to work on this day or not.
+ 
+     ,"user"."id" 
+   AS "staff_id"
+   
+     ,"user"."shift_timeframe" 
+   AS "shift_time"
+ 
+ FROM "block"
+ JOIN "user" ON "block"."id" = "user"."block_id"
+ ) AS 
+"subquery"
+WHERE "working_today" = 't' -- This query will only include dates where working_today = true (days an employee is supposed to work)
+;
+
+
+
+
+
+
+
+
+
 --============================  Build the schedule for all staff members  ============================
 INSERT INTO "schedule" ("date", "staff_id", "shift_time")
 SELECT "date", "staff_id", "shift_time"
