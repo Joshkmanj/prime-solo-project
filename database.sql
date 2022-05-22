@@ -150,12 +150,8 @@ VALUES
 
 
 
---============================  Date Manipulation  ============================
--- Gets you the date of the first monday of the current year
-SELECT to_date(('1/'|| to_char(current_date,'IYYY')), 'IDDD/IYYY');
 
-
---============================  BLOCK SCHEDULE  ============================
+--===============  BLOCK SCHEDULE AND DATE MANIPULATION  ==================
 -- This turns block schedule columns into an easily repeatable and maleable stack of rows
 SELECT
   unnest(
@@ -192,7 +188,26 @@ WHERE "user"."id" = 1 -- Removing this line will make it a global shift update a
 
 
 
+--=====================================  Automatic calendar rendering cycle  =====================================
+-- The combination of the following three SQL queries will run in a single ASYNC transaction, and it'll automatically render
+-- calendar data cyclically until it is no longer needed.
+
+
+-- ::::::::::::::  S T E P   O N E  ::::::::::::::
+------------ Check to see if the calendar needs to be rerendered -----------
+SELECT "next_calendar_render", "last_calendar_render",
+CASE
+	WHEN  (current_date + ("repetition_interval" - 12)) > "next_calendar_render" THEN TRUE -- If you're more than 12 days into the newest rendered calendar, the calendar will generate more dates.
+	WHEN (current_date + ("repetition_interval" - 12)) <= "next_calendar_render" THEN FALSE -- If you're less than 12 days into the newest rendered calendar, the calendar will not generate more dates.
+END AS "needs_rerender"
+FROM "block"
+;
+
+
+-- ::::::::::::::  S T E P   T W O  ::::::::::::::
 -- This selects the three columns that are needed for the insert statement, and utilizes a fourth column to filter out the days an employee is NOT scheduled to work.
+-- Afterwards, it inserts that data into the schedule table.
+INSERT INTO "schedule" ("date", "staff_id", "shift_time")
 SELECT "date", "staff_id", "shift_time"
 FROM (
  SELECT -- This subquery selects and generates four columns of data.
@@ -221,6 +236,13 @@ FROM (
 "subquery"
 WHERE "working_today" = 't' -- This query will only include dates where working_today = true (days an employee is supposed to work)
 ;
+
+
+-- ::::::::::::::  S T E P   T H R E E  ::::::::::::::
+------------ This sets the trigger for the calendar render cycle forward 6 weeks -----------
+UPDATE "block"
+SET "last_calendar_render" = "next_calendar_render", "next_calendar_render" = "next_calendar_render" + "repetition_interval";
+
 
 
 
