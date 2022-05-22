@@ -8,11 +8,11 @@
 --     "username" VARCHAR (80) UNIQUE NOT NULL,
 --     "password" VARCHAR (1000) NOT NULL
 -- );
---------------------END INTRODUCTION------------------------------------
+--============================ END INTRODUCTION ============================
 
 
 
------------------ DELETE/RESET TABLES ---------------------------------
+--============================ DELETE/RESET TABLES ============================
 -- When reseting the data tables, 
 -- run these commands in the order that they're in!
 DROP TABLE "request_log";
@@ -21,10 +21,10 @@ DROP TABLE "calendar_structure";
 
 DROP TABLE "user";
 DROP TABLE "block";
------------------ DELETE/RESET TABLES ---------------------------------
 
 
------------------------ DATA TABLE SETUP ------------------------------------------------
+
+--============================  DATA TABLE SETUP  ============================
 -- These data tables and test data can be created successfully if
 -- you highlight and execute everything below this line.
 CREATE TABLE "block" (
@@ -83,11 +83,11 @@ CREATE TABLE "request_log" (
 "req_shift_time" VARCHAR(40),
 "type" VARCHAR(100)
 );
------------------------ DATA TABLE SETUP ------------------------------------------------
 
 
 
----------------------------- TEST DATA ----------------------------------------------------------------------------------------
+
+--==========================================  TEST DATA  =============================================
 INSERT INTO "block" ("mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2")
 VALUES 
 (true, true, false, false, true, true, true, false, false, true, true, false, false, false),
@@ -145,22 +145,17 @@ VALUES
 ('3/30/2022',4,'eve'), ('3/31/2022',4,'eve'), ('4/4/2022',4,'eve'), ('4/5/2022',4,'eve'), ('4/8/2022',4,'eve'), ('4/9/2022',4,'eve'), ('4/10/2022',4,'eve'),('4/13/2022',4,'eve'), ('4/14/2022',4,'eve'), ('4/18/2022',4,'eve'), ('4/19/2022',4,'eve'), ('4/22/2022',4,'eve'), ('4/23/2022',4,'eve'), ('4/24/2022',4,'eve'),
 ('3/28/2022',5,'nht'), ('3/29/2022',5,'nht'), ('4/1/2022',5,'nht'), ('4/2/2022',5,'nht'), ('4/3/2022',5,'nht'), ('4/6/2022',5,'nht'), ('4/7/2022',5,'nht'),('4/11/2022',5,'nht'), ('4/12/2022',5,'nht'), ('4/15/2022',5,'nht'), ('4/16/2022',5,'nht'), ('4/17/2022',5,'nht'), ('4/20/2022',5,'nht'), ('4/21/2022',5,'nht'),
 ('3/30/2022',6,'nht'), ('3/31/2022',6,'nht'), ('4/4/2022',6,'nht'), ('4/5/2022',6,'nht'), ('4/8/2022',6,'nht'), ('4/9/2022',6,'nht'), ('4/10/2022',6,'nht'),('4/13/2022',6,'nht'), ('4/14/2022',6,'nht'), ('4/18/2022',6,'nht'), ('4/19/2022',6,'nht'), ('4/22/2022',6,'nht'), ('4/23/2022',6,'nht'), ('4/24/2022',6,'nht');
----------------------------- TEST DATA ----------------------------------------------------------------------------------------
-
-
--- Experimental
---SELECT *, to_char("req_date", 'FMDay') AS "week_day_name", to_char("req_date", 'FMMM/FMDD') AS "abrv_date"
---FROM "requests"
---WHERE "employee_id" != 2;
--- Experimental
+----------------------------  END TEST DATA  ----------------------------------------------------------------------------------------
 
 
 
------------- Date Manipulation ------------
+
+--============================  Date Manipulation  ============================
 -- Gets you the date of the first monday of the current year
 SELECT to_date(('1/'|| to_char(current_date,'IYYY')), 'IDDD/IYYY');
 
------------- BLOCK SCHEDULE ------------
+
+--============================  BLOCK SCHEDULE  ============================
 -- Get relevant block schedule data for building schedule
 SELECT "user"."shift_timeframe",
 "last_calendar_render", "next_calendar_render", "repetition_interval",
@@ -172,7 +167,7 @@ JOIN "user" ON "block"."id" = "user"."block_id"
 WHERE "user"."id" = 1;
 
 
-----------------  Build the schedule for all staff members  --------------------
+--============================  Build the schedule for all staff members  ============================
 INSERT INTO "schedule" ("date", "staff_id", "shift_time")
 SELECT "date", "staff_id", "shift_time"
 FROM 
@@ -196,7 +191,8 @@ WHERE "block_schedule" = TRUE -- This filters the subquery so the employee only 
 
 
 
------------- PAY PERIOD ------------
+
+--============================  PAY PERIOD  ============================
 -- Generate list of dates from the "next_render_date" based off the "repetition_interval"
 SELECT generate_series( 
 "next_calendar_render",
@@ -214,5 +210,3 @@ WHERE "iso_day_number" =
 			WHERE ("iso_day_number" % 14 = 0) AND "iso_day_number" >= to_char(current_date, 'IDDD')::int
 			)--OR "iso_day_number" = 1
 ORDER BY "id";
-
--- Get 
