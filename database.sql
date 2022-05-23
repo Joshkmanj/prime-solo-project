@@ -244,48 +244,6 @@ UPDATE "block"
 SET "last_calendar_render" = "next_calendar_render", "next_calendar_render" = "next_calendar_render" + "repetition_interval";
 
 
-
-
-
-
-
-
-
-
---============================  Build the schedule for all staff members  ============================
-INSERT INTO "schedule" ("date", "staff_id", "shift_time")
-SELECT "date", "staff_id", "shift_time"
-FROM 
-(SELECT -- This subquery attaches all necesary shift data for every calendar date
-generate_series(
-("next_calendar_render")::timestamp,
-("next_calendar_render" + ("repetition_interval" - 1))::timestamp,
-interval '1 day') AS "date",
-(unnest(array_remove(array["mo1","tu1","we1","th1","fr1","sa1","su1",
-"mo2","tu2","we2","th2","fr2","sa2","su2",
-"mo3","tu3","we3","th3","fr3","sa3","su3"], NULL))) AS "block_schedule",
-"user"."id" AS "staff_id",
-"user"."shift_timeframe" AS "shift_time"
-
-FROM "block"
-JOIN "user" ON "block"."id" = "user"."block_id"
---WHERE "user"."id" = 1 -- This makes it a global shift update and not just for one employee!
-) AS "subquery"
-WHERE "block_schedule" = TRUE -- This filters the subquery so the employee only works on days specified by their block schedule.
-;
-
-
-
-
---============================  PAY PERIOD  ============================
--- Generate list of dates from the "next_render_date" based off the "repetition_interval"
-SELECT generate_series( 
-"next_calendar_render",
-"next_calendar_render" + ("repetition_interval" - 1),
-interval '1 day') AS "generated_date"
-FROM "block"
-WHERE "id" = 3;
-
 -- Get next pay period end
 SELECT *
 FROM "calendar_structure"
