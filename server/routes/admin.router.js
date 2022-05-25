@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/:id', (req, res) => {
   scheduleId = req.params.id;
 
-  const blockQuery = `SELECT "user"."shift_timeframe", 
+  const blockQuery = `SELECT "user"."shift_timeframe",
   "last_calendar_render", "next_calendar_render", "repetition_interval",
   array_remove(array["mo1","tu1","we1","th1","fr1","sa1","su1",
   "mo2","tu2","we2","th2","fr2","sa2","su2",
@@ -25,9 +25,10 @@ router.get('/:id', (req, res) => {
     })
 });
 
-//------------- Example post route for an async money transfer ---------------
-// Using async can be pretty helpful, it's usually paired with 'await's inside the function.
-router.post('/', async (req, res) => {
+
+router.post('/generator', async (req, res) => {
+
+  console.log('inside generator function');
 
   const connection = await pool.connect();
 
@@ -43,48 +44,51 @@ router.post('/', async (req, res) => {
     FROM "block"
     ;`;
 
-    const generateWorkersSchedules = `INSERT INTO "schedule" ("date", "staff_id", "shift_time")
-    SELECT "date", "staff_id", "shift_time"
-    FROM (
-     SELECT 
+    // const generateWorkersSchedules = `INSERT INTO "schedule" ("date", "staff_id", "shift_time")
+    // SELECT "date", "staff_id", "shift_time"
+    // FROM (
+    //  SELECT 
      
-         generate_series(
-         ("next_calendar_render")::timestamp,
-         ("next_calendar_render" + ("repetition_interval" - 1))::timestamp,
-         interval '1 day') 
-       AS "date"
+    //      generate_series(
+    //      ("next_calendar_render")::timestamp,
+    //      ("next_calendar_render" + ("repetition_interval" - 1))::timestamp,
+    //      interval '1 day')
+    //    AS "date"
     
-         ,unnest(string_to_array(left(repeat(array_to_string(
-         array["mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2","mo3","tu3","we3","th3","fr3","sa3","su3"
-         ,"mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2","mo3","tu3","we3","th3","fr3","sa3","su3"]
-         ,',')||',',3), (2 * "repetition_interval")-1 ), ',')) 
-       AS "working_today"
+    //      ,unnest(string_to_array(left(repeat(array_to_string(
+    //      array["mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2","mo3","tu3","we3","th3","fr3","sa3","su3"
+    //      ,"mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2","mo3","tu3","we3","th3","fr3","sa3","su3"]
+    //      ,',')||',',3), (2 * "repetition_interval")-1 ), ',')) 
+    //    AS "working_today"
      
-         ,"user"."id" 
-       AS "staff_id"
+    //      ,"user"."id" 
+    //    AS "staff_id"
        
-         ,"user"."shift_timeframe" 
-       AS "shift_time"
+    //      ,"user"."shift_timeframe" 
+    //    AS "shift_time"
      
-     FROM "block"
-     JOIN "user" ON "block"."id" = "user"."block_id"
-     ) AS 
-    "block_list"
-    WHERE "working_today" = 't'
-    ;`;
-    
-    const resetGenerationTrigger = `UPDATE "block"
-    SET "last_calendar_render" = "next_calendar_render", "next_calendar_render" = "next_calendar_render" + "repetition_interval"
-    ;`;
+    //  FROM "block"
+    //  JOIN "user" ON "block"."id" = "user"."block_id"
+    //  ) AS 
+    // "block_list"
+    // WHERE "working_today" = 't'
+    // ;`;
+
+    // const resetGenerationTrigger = `UPDATE "block"
+    // SET "last_calendar_render" = "next_calendar_render", "next_calendar_render" = "next_calendar_render" + "repetition_interval"
+    // ;`;
 
     // Check the schedule to see if it needs to be built out further.
     // We want to save the result so we can use logic with that result.
     const scheduleData = await connection.query(checkScheduleData);
     let needsRegenerating = scheduleData.rows[0].needs_rerender
 
+    console.log(needsRegenerating);
+
     if (needsRegenerating == false) {
       // If the calendar schedule doesn't need to be generated further, the queries can stop here.
       await connection.query('COMMIT');
+      console.log('Needs Regenerating = FALSE');
       res.sendStatus(200);
     } 
     else if (needsRegenerating == true){
@@ -93,19 +97,19 @@ router.post('/', async (req, res) => {
 
       
       // If yes, then continue on and build the calendar
-      await connection.query(generateWorkersSchedules);
+      // await connection.query(generateWorkersSchedules);
       
       // After building the calendar, the calendar rendering trigger needs to be updated.
-      await connection.query(resetGenerationTrigger);
+      // await connection.query(resetGenerationTrigger);
       
       // Lastly we need code that says 'commit'
       await connection.query('COMMIT');
-      
+      console.log('Needs Regenerating = TRUE');
       res.sendStatus(200)
     }
 
   } catch (error) {
-    await connection.query('ROLLBACK');
+    await connection.query('ROLLBACK'); 
     console.log('transaction error! Rolling back!', error);
     res.sendStatus(500);
 
