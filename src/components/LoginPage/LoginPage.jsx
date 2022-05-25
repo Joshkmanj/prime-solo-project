@@ -5,6 +5,10 @@ import { useHistory } from 'react-router-dom';
 function LoginPage() {
   const history = useHistory();
 
+  const goToAbout = () =>{
+    history.push('/about')
+  }
+
   return (
     <div>
       <LoginForm />
@@ -19,6 +23,7 @@ function LoginPage() {
         >
           Register
         </button>
+        <footer onClick={goToAbout}>&copy; Josh Kralewski</footer>
       </center>
     </div>
   );

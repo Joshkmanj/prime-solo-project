@@ -38,16 +38,18 @@ function AboutPage() {
               <Item elevation={(index + 1)}>{tech}</Item>
             </Grid>
           ))}
+
+
           <Typography variant="h5" component="div" gutterBottom mt={4}>
             Biggest Challenges:
           </Typography>
           <Grid item xs={4} sm={4} md={4}>
             <Item elevation={12}>PostgresQl:
               <li>
-                Generating a calendar from scratch
+                Who knew calendars were complicated?
               </li>
               <li>
-                Very complicated & convoluted queries
+                Generating a calendar from scratch
               </li>
             </Item>
           </Grid>
@@ -63,6 +65,20 @@ function AboutPage() {
           </Grid>
           <Grid item xs={4} sm={4} md={4} mt={1}>
             <Item elevation={12}>PostgresQl again</Item>
+          </Grid>
+          <Typography variant="h5" component="div" gutterBottom mt={4}>
+            Future improvements:
+          </Typography>
+          <Grid item xs={4} sm={4} md={4}>
+            <Item elevation={12}>Yet again, PostgresQL
+            </Item>
+          </Grid>
+          <Grid item xs={4} sm={4} md={4} mt={1}>
+            <Item elevation={24}>More focus on user experience
+            </Item>
+          </Grid>
+          <Grid item xs={4} sm={4} md={4} mt={1}>
+            <Item elevation={12}>Administrator view</Item>
           </Grid>
 
           <Typography variant="h5" component="div" gutterBottom mt={4}>

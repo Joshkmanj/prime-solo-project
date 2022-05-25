@@ -21,11 +21,14 @@ function ModifyShift() {
     const user = useSelector((store) => store.user)
     const schedule = useSelector((store) => store.schedule)
     const openShifts = useSelector((store) => store.openShifts)
+    // const todaysDate = useSelector((store) => store.todaysDate)
 
+    
     useEffect(() => {
         console.log('In useEffect');
+        // dispatch({ type: 'FETCH_CURRENT_DATE' })
         // dispatch({ type: 'FETCH_SHIFTS', payload: user.id })
-        dispatch({ type: 'FETCH_OPEN_SHIFTS', payload: user.id})
+        // dispatch({ type: 'FETCH_OPEN_SHIFTS', payload: user.id})
     }, [])
 
 
@@ -174,14 +177,50 @@ function ModifyShift() {
     //   };
     //----------- MULTISELECT-----------------------------
 
+    const testHandler = () => {
+        // console.log('Test button clicked');
+        // dispatch({ type: 'FETCH_CURRENT_DATE' })
+    }
+
+    const [firstArray, setFirstArray] = useState(
+        ['true', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true', 'true', 'true']
+        );
+        const [secondArray, setSecondArray] = useState('')
+
+    const mathHandler = (array) => {
+        let scndArray = []
+        for (let i = 1; i < array.length +1; i++) {
+            console.log(i);
+            if (array[i] == 'true'){
+                console.log(['date','shift time', i]);
+                scndArray.push(['date','shift time', i])
+            } else{
+                console.log('false');
+            }
+        }
+        setSecondArray(scndArray);
+    }
+    const refreshHandler = () => {
+        console.log('refresh button clicked');
+        console.log(firstArray);
+        console.log(secondArray);
+    }
+
+
 
     return (
         <>
             <NavBar />
             <h1>Mod:{modifier}, shiftId:{shiftId}</h1>
-            {(modifier === 'vaycay') && <VaycayModifier schedule={schedule} />}
+            {/* {(modifier === 'vaycay') && <VaycayModifier schedule={schedule} />} */}
+            <button onClick={testHandler}>Test button</button>
+            <button onClick={() =>{mathHandler(firstArray)}}>Math button</button>
+            <button onClick={refreshHandler}>refresh button</button>
 
-
+                <pre>
+                {JSON.stringify(firstArray)}
+                {secondArray && <h3>heres the second array</h3> + JSON.stringify(secondArray)}
+                </pre>
 
         </>
     )

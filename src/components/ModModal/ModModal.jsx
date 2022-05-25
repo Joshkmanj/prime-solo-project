@@ -169,33 +169,27 @@ function NestedModal({ cDate, user }) {
     console.log('shift ID is:', cDate.shift_id);
     handleClose();
     history.push(`/modify-shift/trade/${cDate.shift_id}`)
-  }
+  };
 
   return (
     <div>
-      {/* <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }}/> */}
-      {(shiftConverter(cDate.shift_time)) ? <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={convertedShift} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }} /> : <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ width: 270, borderRadius: '5px', p: 1 }} />}
+      {(shiftConverter(cDate.shift_time)) ? 
+      <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={convertedShift} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }} /> 
+      : 
+      <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ width: 270, borderRadius: '5px', p: 1 }} />}
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
-        <Box
-          sx={{ ...style, width: 400 }}
-        >
+        aria-describedby="parent-modal-description">
+        <Box sx={{ ...style, width: 400 }}>
+
           <h2 id="parent-modal-title">Options for {cDate.week_day_name} - {cDate.abrv_date}</h2>
           <Stack direction="column" spacing={2}>
-            {/* <Button variant="contained" onClick={()=>{history.push(`/modify-shift/trade/${cDate.shift_id}`)}}>Trade Shift</Button> */}
-
-            {/* <TradeModal cDate={cDate} /> */}
             <Button variant="contained" onClick={handleTradeOpen}>Trade Shift</Button>
-
-            {/* <Button variant="contained" onClick={handleGiveAway}>Give Away</Button> */}
+            <Button variant="contained" onClick={handleGiveAway}>Give Away</Button>
             <SickModal cDate={cDate} handleClose={handleClose} user={user} dispatch={dispatch} />
-
           </Stack>
-
 
         </Box>
       </Modal>
