@@ -12,7 +12,7 @@ router.get('/calendar/:id', (req, res) => {
   FROM "calendar_structure" AS "cs"
   LEFT JOIN (SELECT * FROM "schedule" WHERE "staff_id" = $1) AS "sc"
   ON "cs"."calendar_date" = "sc"."date"
-  WHERE "week_number" > 11 AND "week_number" < 21
+  WHERE "week_number" >= (to_char(current_timestamp, 'IW')::int) AND "week_number" < (to_char(current_timestamp, 'IW')::int + 10)
   ORDER BY "cs"."calendar_date";`
   
   // The query text is sent to the database with a sanitized input
