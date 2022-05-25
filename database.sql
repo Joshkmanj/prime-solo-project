@@ -219,8 +219,7 @@ FROM (
    AS "date"
 
      ,unnest(string_to_array(left(repeat(array_to_string(
-     array["mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2","mo3","tu3","we3","th3","fr3","sa3","su3"
-     ,"mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2","mo3","tu3","we3","th3","fr3","sa3","su3"]
+     array["mo1","tu1","we1","th1","fr1","sa1","su1","mo2","tu2","we2","th2","fr2","sa2","su2","mo3","tu3","we3","th3","fr3","sa3","su3"]
      ,',')||',',3),83), ',')) 
    AS "working_today" -- This data is used to tell if an employee is supposed to work on this day or not.
  
