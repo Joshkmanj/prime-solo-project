@@ -29,6 +29,8 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 
 import { useHistory } from 'react-router-dom';
 
+import PickupModal from '../PickupModal/PickupModal'
+
 
 
 function NavBar() {
@@ -37,7 +39,7 @@ function NavBar() {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const pages = ['Home', 'Drop a Shift', 'Trade Shift', 'Take a Shift', 'Vacation Request', 'Call in sick', 'About'];
-  const settings = ['Profile', 'Account', 'Random Kanye West Quote', 'Dashboard', 'Logout'];
+  const settings = ['Profile', 'Colleagues', 'Full Calendar', 'Logout'];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -61,11 +63,12 @@ function NavBar() {
       switch (pageName) {
         case 'Home':
           console.log('Switch: routing to -> home View');
+          history.push('/user')
           break;
         case 'Drop a Shift':
           console.log('Switch: routing to -> Give Away Shift View');
           // dispatch({type: SET_MODIFIER, payload:'Shift Giveaway'})
-          history.push('/modify-shift/drop/-1')
+          // history.push('/modify-shift/drop/-1')
           break;
         case 'Trade Shift':
           console.log('Switch: routing to -> Trade Shift View');
@@ -75,12 +78,12 @@ function NavBar() {
         case 'Take a Shift':
           console.log('Switch: routing to -> Pick Up Shift View');
           // dispatch({type: SET_MODIFIER, payload:'Shift Pick-up'})
-          history.push('/modify-shift/pick-up/-1')
+          // history.push('/modify-shift/pick-up/-1')
           break;
         case 'Vacation Request':
           console.log('Switch: routing to -> Vacation Request View');
           // dispatch({type: SET_MODIFIER, payload:'Vacation Request'})
-          history.push('/modify-shift/vaycay/-1')
+          // history.push('/modify-shift/vaycay/-1')
           break;
         case 'Call in sick':
           console.log('Switch: routing to -> Call in sick View');
@@ -148,7 +151,7 @@ function NavBar() {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Profile Photo"
-                    src="https://media-exp1.licdn.com/dms/image/C4E03AQGlycW9Vpes2w/profile-displayphoto-shrink_800_800/0/1647360104027?e=1652918400&v=beta&t=rBnpDU56XgPtE4XOBxYKGHvRK0JdU2VkudtdyU1TM98"
+                    src={user.image_path}
                   />
                 </IconButton>
               </Tooltip>
@@ -215,12 +218,13 @@ function NavBar() {
                   <MenuItem key={page}
                     // This adds functionality of the menu items
                     onClick={() => { handleCloseNavMenu(page) }}>
-                    <Typography
-                      textAlign="center"
-                    >{page}</Typography>
+                    <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
+              <IconButton color="inherit">
+            <SearchIcon />
+          </IconButton>
             </Box>
 
             {/* Here's the logo */}
@@ -228,9 +232,8 @@ function NavBar() {
               variant="h6"
               noWrap
               component="div"
-              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-            >
-              Shifty Business
+              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              Shifty
             </Typography>
 
 
@@ -267,17 +270,18 @@ function NavBar() {
       <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar>
           <IconButton color="inherit" aria-label="open drawer">
-            <MenuIcon />
+            {/* <MenuIcon /> */}
           </IconButton>
-          <StyledFab color="secondary" aria-label="add">
+          {/* <StyledFab color="secondary" aria-label="add">
             <AddIcon />
-          </StyledFab>
+          </StyledFab> */}
+            <PickupModal user={user}/>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit">
-            <SearchIcon />
+          <Typography>{user.first_name} {user.last_name}</Typography>
           </IconButton>
           <IconButton color="inherit">
-            <MoreIcon />
+            {/* <MoreIcon /> */}
           </IconButton>
         </Toolbar>
       </AppBar>

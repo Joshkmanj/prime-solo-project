@@ -21,6 +21,10 @@ Container
 .container {
   padding: 20px;
 }
+.landing-form{
+  display: flex;
+  align-items: cente;
+}
 
 /* --------------------------------------------------------------------------------
 Button
