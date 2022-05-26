@@ -7,7 +7,7 @@ import NavBar from '../NavBar/NavBar';
 
 //---------< MUI imports >----------------
 import NestedModal from '../ModModal/ModModal.jsx'
-import CssBaseline from '@mui/material/CssBaseline';
+// import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import List from '@mui/material/List';
@@ -56,7 +56,7 @@ function UserPage() {
     <>
       <NavBar />
       <React.Fragment>
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <Paper square sx={{ pb: '50px' }}>
           <Typography variant="h5" gutterBottom component="div" sx={{ p: 2, pb: 0 }}>
             Schedule
@@ -65,7 +65,7 @@ function UserPage() {
             {calendar.map(cDate => (
               <React.Fragment key={cDate.id}>
                 {cDate.week_day_name === 'Monday' && (
-                  <ListSubheader sx={{ bgcolor: 'background.paper' }}>
+                  <ListSubheader sx={{ bgColor: 'primary.light' }}>
                     Week {cDate.week_number}
                   </ListSubheader>
                 )}

@@ -21,6 +21,8 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import ModifyShift from '../ModifyShift/ModifyShift';
 
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import './App.css';
 
 function App() {
@@ -32,7 +34,70 @@ function App() {
     dispatch({ type: 'FETCH_USER' });
   }, [dispatch]);
 
+
+    // ========< MUI GLOBAL THEME >==========
+  // MUI info link https://mui.com/material-ui/customization/theme-components/#global-style-overrides
+  // const theme = createTheme({
+  //   typography: {
+  //     allVariants: {
+  //       fontFamily: ['Montserrat', 'sans-serif'].join(','),
+  //     },
+  //   },
+  //   palette: {
+  //     primary: {
+  //         light: '#5f7993',
+  //         main: '#607d8b',
+  //         dark: '#34515e',
+  //         contrastText: '#fafafa'
+  //     },
+  //     secondary: {
+  //         main: '#d60000',
+  //         contrastText: '#fafafa'
+  //     }
+  //   },
+  // });
+
+  const theme = createTheme( {
+    palette: {
+      type: 'light',
+      primary: {
+        main: '#149ad0',
+      },
+      secondary: {
+        main: '#4e2190',
+      },
+      info: {
+        main: '#4e2190',
+      },
+      error: {
+        main: '#d60000',
+      },
+      success: {
+        main: '#019344',
+      },
+    },
+    typography: {
+      allVariants: {
+        fontFamily: ['Montserrat', 'system-ui', 'sans-serif'].join(','),
+      },
+    },
+  });
+
+  // light blue: #149ad0
+  // dark blue: #3a77d0
+  // purple: #4e2190
+  // green: #019344
+
+
+  // red: #d60000
+  // light: '#5f7993',
+  // main: '#607d8b',
+  // dark: '#34515e',
+
+
   return (
+    <>
+    <ThemeProvider theme={theme}>
     <Router>
       <div>
 
@@ -131,6 +196,8 @@ function App() {
 
       </div>
     </Router>
+    </ThemeProvider>
+    </>
   );
 }
 
