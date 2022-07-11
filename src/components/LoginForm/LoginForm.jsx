@@ -54,39 +54,15 @@ function LoginForm() {
 
 
   return (
-    <form className="formPanel" onSubmit={login}>
+    <form 
+    // className="formPanel" 
+    onSubmit={login}>
       <h2>Login</h2>
       {errors.loginMessage && (
         <h3 className="alert" role="alert">
           {errors.loginMessage}
         </h3>
       )}
-
-      {/* <div>
-        <label htmlFor="username">
-          Username:
-          <input
-            type="text"
-            name="username"
-            required
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-      </div>
-
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
-            type="password"
-            name="password"
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-      </div> */}
 
       <Box sx={{ minWidth: 120 }}>
               {/* -------------< Username Input >-------------- */}
@@ -125,18 +101,14 @@ function LoginForm() {
 
       </Box>
 
-      {/* <div> */}
-        {/* <Button type="submit" name="submit">
-          Log In
-        </Button> */}
+
         <Box sx={{ textAlign:'center'}}>
 
         <Button type="submit" variant="contained" name="submit" sx={{ width:6/10, m:2}}>
           Log in
         </Button>
         </Box>
-        {/* <input className="btn" type="submit" name="submit" value="Log In" /> */}
-      {/* </div> */}
+
     </form>
   );
 }

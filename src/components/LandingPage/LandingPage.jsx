@@ -6,10 +6,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-// CSS
-import './LandingPage.css';
-
-
 
 function LandingPage() {
   const [heading, setHeading] = useState('Welcome to Shifty');
@@ -29,6 +25,9 @@ function LandingPage() {
       <Typography sx={{ display: { xs: 'none', sm: 'block', md: 'block', lg: 'block', xl: 'block' }, variant: 'h3' }}>
         <strong>Please switch to a mobile device (or a smaller screen) for optimal viewing.</strong>
       </Typography>
+
+
+
       {/* <Typography sx={{ variant:'p' }}>
             Shifty is a shift trading platform that was created to solve a problem that I had encountered at my former job.
             In order to trade a shift, you would either have to fill out a paper form and turn it into a drop box, or you

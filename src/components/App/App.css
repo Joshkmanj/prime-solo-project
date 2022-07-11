@@ -5,7 +5,7 @@ body,
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: montserrat, sans-serif;
   margin: 0px;
 }
 
@@ -113,4 +113,26 @@ Form Treatment
 input {
   margin: 5px;
   margin-bottom: 10px;
+}
+
+
+/* Landing page format */
+.landing-grid {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  align-content: center;
+}
+
+/* Landing Navigation button format */
+.landing-nav{
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  height: 20%;
+  row-gap: 5%;
+  justify-content: center;
 }

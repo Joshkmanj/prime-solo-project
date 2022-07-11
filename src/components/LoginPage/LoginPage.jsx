@@ -5,12 +5,12 @@ import { useHistory } from 'react-router-dom';
 function LoginPage() {
   const history = useHistory();
 
-  const goToAbout = () =>{
+  const goToAbout = () => {
     history.push('/about')
   }
 
   return (
-    <div>
+    <div className="landing-grid">
       <LoginForm />
 
       <center>
