@@ -99,7 +99,7 @@ function App() {
     <>
     <ThemeProvider theme={theme}>
     <Router>
-      <div>
+      {/* <div> */}
 
         {/* <Nav /> */}
 
@@ -194,7 +194,7 @@ function App() {
 
         {/* <Footer /> */}
 
-      </div>
+      {/* </div> */}
     </Router>
     </ThemeProvider>
     </>

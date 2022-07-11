@@ -1,6 +1,8 @@
+// Importing tools
 import { useEffect, useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-import * as React from 'react';
+import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+// import * as React from 'react';
 import PropTypes from 'prop-types';
 import MultiSelectUnstyled from '@mui/base/MultiSelectUnstyled';
 import { selectUnstyledClasses } from '@mui/base/SelectUnstyled';
@@ -8,9 +10,9 @@ import OptionUnstyled, { optionUnstyledClasses } from '@mui/base/OptionUnstyled'
 import PopperUnstyled from '@mui/base/PopperUnstyled';
 import { styled } from '@mui/system';
 
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../NavBar/NavBar'
+
+// Importing views
 import VaycayModifier from './VaycayModifier.jsx';
 import TradeModifier from './TradeModifier.jsx';
 

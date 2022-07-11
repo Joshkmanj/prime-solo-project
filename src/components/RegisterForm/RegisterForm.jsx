@@ -92,7 +92,7 @@ function RegisterForm() {
 
 
   return (
-    <div>
+    // <div>
       <Card sx={{ maxWidth: 345 }}>
         <form
         // className="formPanel" 
@@ -114,7 +114,7 @@ function RegisterForm() {
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <TextField
                   id="firstname-input"
-                  label="Firstname"
+                  label="First Name"
                   value={firstname}
                   onChange={(event) => setFirstname(event.target.value)} />
               </FormControl>
@@ -124,7 +124,7 @@ function RegisterForm() {
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <TextField
                   id="lastname-input"
-                  label="Lastname"
+                  label="Last Name"
                   value={lastname}
                   onChange={(event) => setLastname(event.target.value)} />
               </FormControl>
@@ -210,7 +210,7 @@ function RegisterForm() {
           </CardActions>
         </form>
       </Card>
-    </div>
+    // </div>
 
 
 
