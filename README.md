@@ -2,7 +2,6 @@
 
 _Two Week Sprint_
 
-_What was the purpose behind this app_
 
 Shiftly is a shift trading app whose purpose is to solve the complicated and outdated shift trading practices of a former employer of mine, which utilized paper forms and unintuitive scheduling software that required training to understand and navigate. In a 300 person department, shifts are traded frequently and in large quantities, which creates an incredibly time intensive and cumbersome problem for both management and employees alike. 
 
@@ -28,56 +27,26 @@ Software required to install the app.
 7. Run `npm run client` in your terminal, this command will open up a new browser tab for you!
 
 
-## Running the tests
+## Usage
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+- Employees: Pick up, give away, and call in sick for shifts.
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+- Javascript
+- React 
+- Redux 
+- Sagas
+- Material UI
+- Node.js
+- PostgresQL
+- Axios
+- Express
 
-## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+## Acknowledgement
+I'm very thankful to the healthcare staff that I interviewed as part of my research for this application. I'm also very thankful to [Prime Digital Academy](www.primeacademy.io) for equipping me with the skills I needed to build this app.
 
-## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+## Support
+If you have suggestions or issues, please email me at joshuakralewski@gmail.com
