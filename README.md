@@ -6,35 +6,27 @@ _What was the purpose behind this app_
 
 Shiftly is a shift trading app whose purpose is to solve the complicated and outdated shift trading practices of a former employer of mine, which utilized paper forms and unintuitive scheduling software that required training to understand and navigate. In a 300 person department, shifts are traded frequently and in large quantities, which creates an incredibly time intensive and cumbersome problem for both management and employees alike. 
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Software required to install the app.
 
-```
-Give examples
-```
+- [Node.js](https://nodejs.org/en/)
+- [Postgres](https://www.postgresql.org/download/)
 
-### Installing
 
-A step by step series of examples that tell you how to get a development env running
+## Installation
 
-Say what the step will be
+1. Create a database named `prime_app`,
+2. The queries in the `database.sql` file are set up to create all the necessary tables and populate the needed data to allow the application to run correctly. The project is built on [Postgres](https://www.postgresql.org/download/), so you will need to make sure to have that installed. We recommend using Postico to run those queries as that was used to create the queries.
+3. (OPTIONAL) Create a long string of random characters that can replace `superDuperSecret` in the code block below. Here's a site that can help: [https://passwordsgenerator.net/](https://passwordsgenerator.net/). If you don't do this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you will get a warning. If this is for testing purposes, then having a high security encryption key is not as necessary.
+4. Create a `.env` file at the root of the project and paste this line into the file:
+  ```
+  SERVER_SESSION_SECRET=superDuperSecret
+  ```
+5. Open up your editor of choice and run an `npm install`
+6. Run `npm run server` in your terminal
+7. Run `npm run client` in your terminal, this command will open up a new browser tab for you!
 
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
