@@ -16,6 +16,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
+  // bgcolor: '',
   border: '2px solid #000',
   boxShadow: 24,
   pt: 2,
@@ -174,9 +175,16 @@ function NestedModal({ cDate, user }) {
   return (
     <div>
       {(shiftConverter(cDate.shift_time)) ? 
-      <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={convertedShift} sx={{ bgcolor: '#9aca38', width: 270, borderRadius: '5px', p: 1 }} /> 
+      // <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={convertedShift} sx={{ bgcolor: '#019344', width: 270, borderRadius: '5px', p: 1 }} /> 
+     
+     <Box sx={{ bgcolor: 'success.light', color:"white", width: 270, borderRadius: '5px', p: 1 }}>
+      <ListItemText onClick={handleOpen} primary={cDate.week_day_name} secondary={convertedShift}  /> 
+     </Box>
       : 
-      <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time} sx={{ width: 270, borderRadius: '5px', p: 1 }} />}
+      <Box sx={{ width: 270, borderRadius: '5px', p: 1 }}>
+        <ListItemText primary={cDate.week_day_name} secondary={cDate.shift_time}  />
+      </Box>}
+
       <Modal
         open={open}
         onClose={handleClose}
